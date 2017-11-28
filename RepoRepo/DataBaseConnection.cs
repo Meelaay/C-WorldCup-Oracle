@@ -24,10 +24,11 @@ namespace RepoRepo
             string sid = "xe";
             string user = "system";
             string pass = "password";
-            string f =
-                $"Data Source = (DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)(HOST={host})(PORT={port}))(CONNECT_DATA=(SID={sid})));uid={user};pwd={pass};";
 
-            ConnectionString = $"Data Source = (DESCRIPTION = (ADDRESS = (PROTOCOL = TCP)(HOST = {host})(PORT = {port}))(CONNECT_DATA =(SERVER = DEDICATED)(SERVICE_NAME = XE)));User Id={user};password={pass};";
+            ConnectionString = String.Format(
+                "Data Source = (DESCRIPTION = (ADDRESS = (PROTOCOL = TCP)(HOST = {0})(PORT = {1}))(CONNECT_DATA =(SERVER = DEDICATED)(SERVICE_NAME = XE)));User Id={2};password={3};",
+                host, port, user, pass);
+
             _myConnection.ConnectionString = ConnectionString;
         }
 
@@ -55,6 +56,7 @@ namespace RepoRepo
             string test = "";
             foreach ( DataRow row in dt.Rows)
             {
+                //REDA : zid breakpoint hna 9bel compilation
                 test = row["NAME"].ToString();
                 //KHDMAAAAT reda bdel ip lfou9w jreb, matnsach tzid breakpoint 7da test w tinspecti khassk tl9aha 5
             }
