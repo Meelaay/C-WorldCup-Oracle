@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-
+using Oracle.DataAccess.Client;
 namespace RepoRepo
 {
     public partial class Form1 : Form
@@ -15,6 +15,12 @@ namespace RepoRepo
         public Form1()
         {
             InitializeComponent();
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            DataBaseConnection a = new DataBaseConnection();
+            a.EstablishConnection();
         }
     }
 }
