@@ -14,16 +14,19 @@ namespace RepoRepo
     public class DataBaseConnection
     {
         public string ConnectionString { get; }
+        public OracleConnection _myConnection = new OracleConnection();
+
+
 
         public DataBaseConnection()
         {
             // for Amine use : 192.168.234.130
             // for Reda use  : 10.77.0.2
-            string host = "192.168.234.130";
-            string port = "1521";
-            string sid = "xe";
-            string user = "system";
-            string pass = "password";
+            const string host = "192.168.234.130";
+            const string port = "1521";
+            const string sid = "XE";
+            const string user = "system";
+            const string pass = "password";
 
             ConnectionString = String.Format(
                 "Data Source = (DESCRIPTION = (ADDRESS = (PROTOCOL = TCP)(HOST = {0})(PORT = {1}))(CONNECT_DATA =(SERVER = DEDICATED)(SERVICE_NAME = XE)));User Id={2};password={3};",
@@ -31,8 +34,6 @@ namespace RepoRepo
 
             _myConnection.ConnectionString = ConnectionString;
         }
-
-        public OracleConnection _myConnection = new OracleConnection();
         
         public void EstablishConnection()
         {
@@ -56,9 +57,7 @@ namespace RepoRepo
             string test = "";
             foreach ( DataRow row in dt.Rows)
             {
-                //REDA : zid breakpoint hna 9bel compilation
                 test = row["NAME"].ToString();
-                //KHDMAAAAT reda bdel ip lfou9w jreb, matnsach tzid breakpoint 7da test w tinspecti khassk tl9aha 5
             }
             return dt;
         }
