@@ -11,16 +11,28 @@ using Oracle.DataAccess.Client;
 namespace RepoRepo
 {
     public partial class Form1 : Form
-    {
+    {           
+        
         public Form1()
         {
             InitializeComponent();
-        }
+            Image menu = Image.FromFile(@"C:\Users\Amine\Desktop\WoldCup2018\Sprites\main\menu1.png");
+            pictureBox1.Size = new Size(menu.Width, menu.Height); //1150 x 715
+            Size = new Size(menu.Width + 400, menu.Height);
+            pictureBox1.Left = 200;
+            pictureBox1.Top = 0;
+            pictureBox1.Image = menu;
+                    
+            Team team1 = new Team();
+            this.Controls.Add(team1.SetFlag(@"C:\Users\Amine\Desktop\WoldCup2018\Sprites\teams\argentina.png"));
+            team1.Show();
 
+        }
+        /*
         private void button1_Click(object sender, EventArgs e)
         {
             DataBaseConnection a = new DataBaseConnection();
             a.EstablishConnection();
-        }
+        }*/
     }
 }
