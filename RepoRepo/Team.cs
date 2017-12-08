@@ -5,21 +5,28 @@ namespace RepoRepo
 {
     public class Team
     {
-        PictureBox flag = new PictureBox();
+        private readonly PictureBox _flag;
 
-        public PictureBox SetFlag(string path)
+        public Team(string path, Point position)
         {
+            _flag = new PictureBox();
+            _flag.Image = Image.FromFile(path);
+            _flag.Size = new Size((int)(_flag.Image.Width / 1.25), (int)(_flag.Image.Height / 1.25));
+            _flag.SizeMode = PictureBoxSizeMode.StretchImage;
+            _flag.Left = position.X;
+            _flag.Top = position.Y;
 
-            flag.Image = Image.FromFile(path);
-            flag.Size = new Size(flag.Image.Width, flag.Image.Height);
-            flag.Left = 0;
-            flag.Top = 0;
-            return flag;
+            //238, 125 is position of team 1 in group A
+
+        }
+        public PictureBox GetFlag()
+        {
+            return _flag;
         }
 
         public void Show()
         {
-            flag.Visible = true;
+            _flag.Visible = true;
         }
         
         //todo create a ctor overload for future use 

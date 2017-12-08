@@ -11,22 +11,35 @@ using Oracle.DataAccess.Client;
 namespace RepoRepo
 {
     public partial class Form1 : Form
-    {           
-        
+    {
+        private Engine32Teams engine32;
+
         public Form1()
         {
             InitializeComponent();
+
             Image menu = Image.FromFile(@"..\..\Sprites\main\menu1.png");
-            pictureBox1.Size = new Size(menu.Width, menu.Height); //1150 x 715
-            Size = new Size(menu.Width + 400, menu.Height);
-            StartPosition = FormStartPosition.CenterScreen;
+            pictureBox1.Size = new Size((int) (menu.Width / 1.25), (int) (menu.Height / 1.25));
+
             pictureBox1.Left = 200;
             pictureBox1.Top = 0;
             pictureBox1.Image = menu;
-                    
-            Team team1 = new Team();
-            this.Controls.Add(team1.SetFlag(@"..\..\Sprites\teams\argentina.png"));
-            team1.Show();
+            pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
+
+            this.Size = new Size(menu.Width+200, menu.Height);
+
+
+            //pictureBox1.Size = new Size(menu.Width, menu.Height); //1150 x 715
+            
+            
+            StartPosition = FormStartPosition.CenterScreen;
+
+
+
+            //Team team1 = new Team();
+            //this.Controls.Add(team1.SetFlag(@"..\..\Sprites\teams\argentina.png"));
+            this.pictureBox1.SendToBack();
+            //team1.Show();
 
         }
 
@@ -34,8 +47,9 @@ namespace RepoRepo
         {
             Point buttonPosition = new Point(0, 0);
 
-            debugTextBox.Text = e.Location.ToString();
-            
+            debugTextBox.Text = GetPosition(pictureBox1).ToString();
+            debugTextBox.AppendText(e.Location.ToString());
+
         }
 
         private Point GetPosition(Control c)
