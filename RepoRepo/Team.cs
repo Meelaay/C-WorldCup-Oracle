@@ -1,32 +1,43 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Drawing;
 using System.Windows.Forms;
 
 namespace RepoRepo
 {
     public class Team
     {
-        private readonly PictureBox _flag;
+        public PictureBox Flag { get; set; }
+        private string Name { get; set; }
 
-        public Team(string path, Point position)
+        public Team(string path, string name)
         {
-            _flag = new PictureBox();
-            _flag.Image = Image.FromFile(path);
-            _flag.Size = new Size((int)(_flag.Image.Width / 1.25), (int)(_flag.Image.Height / 1.25));
-            _flag.SizeMode = PictureBoxSizeMode.StretchImage;
-            _flag.Left = position.X;
-            _flag.Top = position.Y;
-
+            Flag = new PictureBox {Image = Image.FromFile(path)};
+            Flag.Size = new Size((int)(Flag.Image.Width / 1.25), (int)(Flag.Image.Height / 1.25));
+            Flag.SizeMode = PictureBoxSizeMode.StretchImage;
+            
+            this.Name = name;
             //238, 125 is position of team 1 in group A
 
+            this.Flag.Click += new EventHandler(pictureBox_Click);
+
         }
-        public PictureBox GetFlag()
+
+        public void SetFlagPosition(Point position)
         {
-            return _flag;
+            Flag.Left = position.X;
+            Flag.Top = position.Y;
         }
+        void pictureBox_Click(object sender, EventArgs e)
+        {
+            string test = Name;
+
+        }
+
+
 
         public void Show()
         {
-            _flag.Visible = true;
+            Flag.Visible = true;
         }
         
         //todo create a ctor overload for future use 

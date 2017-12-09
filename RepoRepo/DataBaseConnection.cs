@@ -25,7 +25,7 @@ namespace RepoRepo
             const string host = "192.168.234.130";
             const string port = "1521";
             const string sid = "XE";
-            const string user = "system";
+            const string user = "worldcup";
             const string pass = "password";
 
             ConnectionString = String.Format(
@@ -41,6 +41,26 @@ namespace RepoRepo
 
         }
 
+        internal DataTable ExecuteQuery(string query)
+        {
+            _myConnection.Open();
+            DataTable dt = new DataTable();
+            OracleCommand cmd = new OracleCommand(query);
+            cmd.CommandType = CommandType.Text;
+            cmd.Connection = _myConnection;
+            
+            using (OracleDataAdapter dataAdapter = new OracleDataAdapter())
+            {
+                dataAdapter.SelectCommand = cmd;
+                dataAdapter.Fill(dt);
+            }
+            _myConnection.Close();
+            
+            return dt;
+        }
+
+
+        /* initial ExecuteQuery() with test
         private DataTable ExecuteQuery(string query)
         {
             _myConnection.Open();
@@ -55,13 +75,16 @@ namespace RepoRepo
             }
             _myConnection.Close();
             string test = "";
+
             foreach ( DataRow row in dt.Rows)
             {
                 test = row["NAME"].ToString();
             }
             return dt;
         }
+        */
 
+        
 
 
 

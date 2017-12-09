@@ -18,6 +18,8 @@ namespace RepoRepo
         {
             InitializeComponent();
 
+            engine32 = new Engine32Teams();
+
             Image menu = Image.FromFile(@"..\..\Sprites\main\menu1.png");
             pictureBox1.Size = new Size((int) (menu.Width / 1.25), (int) (menu.Height / 1.25));
 
@@ -27,19 +29,21 @@ namespace RepoRepo
             pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
 
             this.Size = new Size(menu.Width+200, menu.Height);
-
-
-            //pictureBox1.Size = new Size(menu.Width, menu.Height); //1150 x 715
-            
             
             StartPosition = FormStartPosition.CenterScreen;
 
+            foreach (var picture in engine32.GetPotPictureBoxes(Engine32Teams.POT1))
+            {
+                this.Controls.Add(picture);
+            }
+            foreach (var picture in engine32.GetPotPictureBoxes(Engine32Teams.POT2))
+            {
+                this.Controls.Add(picture);
+            }
 
 
-            //Team team1 = new Team();
-            //this.Controls.Add(team1.SetFlag(@"..\..\Sprites\teams\argentina.png"));
             this.pictureBox1.SendToBack();
-            //team1.Show();
+            
 
         }
 
