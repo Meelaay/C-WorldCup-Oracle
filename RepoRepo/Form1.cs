@@ -20,23 +20,27 @@ namespace RepoRepo
 
             engine32 = new Engine32Teams();
 
-            Image menu = Image.FromFile(@"..\..\Sprites\main\menu1.png");
-            pictureBox1.Size = new Size((int) (menu.Width / 1.25), (int) (menu.Height / 1.25));
-
-            pictureBox1.Left = 200;
-            pictureBox1.Top = 0;
-            pictureBox1.Image = menu;
-            pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
-
-            this.Size = new Size(menu.Width+200, menu.Height);
+                        
+            this.Size = new Size((int) (Engine32Teams.MENUBOX.Width * 1.25) + 200,
+                (int) (Engine32Teams.MENUBOX.Height * 1.25));
             
             StartPosition = FormStartPosition.CenterScreen;
+
+            this.Controls.Add(Engine32Teams.MENUBOX);
 
             foreach (var picture in engine32.GetPotPictureBoxes(Engine32Teams.POT1))
             {
                 this.Controls.Add(picture);
             }
             foreach (var picture in engine32.GetPotPictureBoxes(Engine32Teams.POT2))
+            {
+                this.Controls.Add(picture);
+            }
+            foreach (var picture in engine32.GetPotPictureBoxes(Engine32Teams.POT3))
+            {
+                this.Controls.Add(picture);
+            }
+            foreach (var picture in engine32.GetPotPictureBoxes(Engine32Teams.POT4))
             {
                 this.Controls.Add(picture);
             }

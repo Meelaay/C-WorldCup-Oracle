@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Drawing;
+using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
 
@@ -12,12 +14,15 @@ namespace RepoRepo
     {
         private DataBaseConnection _connector = new DataBaseConnection();
         private const int NUMBEROFTEAMS = 32;
+
         public const int POT1 = 1;
         public const int POT2 = 2;
         public const int POT3 = 3;
         public const int POT4 = 4;
+
         private List<Point> _initialPositionsList = new List<Point>(NUMBEROFTEAMS + 1);
         private List<string> _teamNames = new List<string>(NUMBEROFTEAMS + 1);
+        public static PictureBox MENUBOX { get; set; }
 
         #region Groups (A->H)
             private Group _groupA;
@@ -30,8 +35,12 @@ namespace RepoRepo
             private Group _groupH;
         #endregion
 
+        public PictureBox GetMenu()
+        {
 
-       
+            throw new NotImplementedException();
+        }
+
         #region Pots (1->4)
 
         private Pot _pot1;
@@ -58,21 +67,36 @@ namespace RepoRepo
                     return _pot4.GetPictureBoxes();
                     break;
             }
-            return null;
+            throw new NullReferenceException("GetPotPictureBoxes -> passed pot is invalid.");
 
         }
 
-        
+        private void SetMenuBox()
+        {
+            Image menu = Image.FromFile(@"..\..\Sprites\main\menu1.png");
+            MENUBOX = new PictureBox();
+            MENUBOX.Size = new Size((int)(menu.Width / 1.25), (int)(menu.Height / 1.25));
+            MENUBOX.Left = 200;
+            //var a = _pot1.GetPictureBoxes();
+            //MENUBOX.Left = (int)(a[0].Image.Width / 1.20);
+            MENUBOX.Top = 0;
+            MENUBOX.Image = menu;
+            MENUBOX.SizeMode = PictureBoxSizeMode.StretchImage;
+        }
 
         public Engine32Teams()
         {
             
+            
+
             FillInitialPositions();
+
             _pot1 = new Pot(FillPotFromDataBase(POT1.ToString()));
             _pot2 = new Pot(FillPotFromDataBase(POT2.ToString()));
-            //_pot3 = new Pot(FillPotFromDataBase(POT1.ToString()));
-            //_pot4 = new Pot(FillPotFromDataBase(POT1.ToString()));
+            _pot3 = new Pot(FillPotFromDataBase(POT3.ToString()));
+            _pot4 = new Pot(FillPotFromDataBase(POT4.ToString()));
 
+            SetMenuBox();
 
             _groupA = new Group();
             _groupB = new Group();
@@ -95,9 +119,11 @@ namespace RepoRepo
                 _initialPositionsList.Add(position);
                 
                 position.Y += 38;
+
                 if (i == 16)
                 {
-                    position.X += 1000;
+                    position.X += 1119;
+                    position.Y = 0;
                 }
             }
             
@@ -110,15 +136,21 @@ namespace RepoRepo
             var teamsListOfPot = new List<Team>();
             string query = String.Format("SELECT country, pot FROM teams t WHERE t.pot = '{0}' ", pot);//pot is 1-2-3-4 not a-b-c-d
             DataTable dt = this._connector.ExecuteQuery(query);
-            int iPot = Convert.ToInt32(pot);
+            int potInteger = Convert.ToInt32(pot);
             int i = 0;
-            switch (iPot)
+            switch (potInteger)
             {
                 case 1:
                     i = 0;
                     break;
                 case 2:
                     i = 7;
+                    break;
+                case 3:
+                    i = 16;
+                    break;
+                case 4:
+                    i = 23;
                     break;
             }
             
@@ -128,6 +160,9 @@ namespace RepoRepo
                 team.SetFlagPosition(this._initialPositionsList[++i]);
                 teamsListOfPot.Add(team);
             }
+
+            if (teamsListOfPot.Count == 0) throw new NullReferenceException("FillPotFromDataBase -> teamsListOfPot is empty.");
+            
             return teamsListOfPot;
 
         }
@@ -143,6 +178,5 @@ namespace RepoRepo
 
 
         
-
     }
 }
