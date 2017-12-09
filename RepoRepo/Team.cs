@@ -8,6 +8,8 @@ namespace RepoRepo
     {
         public PictureBox Flag { get; set; }
         private string Name { get; set; }
+        //todo add pot of every team? or maybe a bool that represent the continent
+
 
         public Team(string path, string name)
         {

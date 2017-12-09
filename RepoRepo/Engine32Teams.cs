@@ -27,19 +27,15 @@ namespace RepoRepo
         #region Groups (A->H)
             private Group _groupA;
             private Group _groupB;
+        /*
             private Group _groupC;
             private Group _groupD;
             private Group _groupE;
             private Group _groupF;
             private Group _groupG;
             private Group _groupH;
+        */
         #endregion
-
-        public PictureBox GetMenu()
-        {
-
-            throw new NotImplementedException();
-        }
 
         #region Pots (1->4)
 
@@ -98,15 +94,18 @@ namespace RepoRepo
 
             SetMenuBox();
 
+            //todo find a solution to positions of group without redundancy
             _groupA = new Group();
             _groupB = new Group();
+                /*    
             _groupC = new Group();
             _groupD = new Group();
             _groupE = new Group();
             _groupF = new Group();
             _groupG = new Group();
             _groupH = new Group();
-        }
+                */    
+            }
 
         private void FillInitialPositions()
         {
