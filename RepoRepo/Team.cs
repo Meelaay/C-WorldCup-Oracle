@@ -7,9 +7,14 @@ namespace RepoRepo
     public class Team
     {
         public PictureBox Flag { get; set; }
-        private string Name { get; set; }
+        public string Name { get; set; }
         //todo add pot of every team? or maybe a bool that represent the continent
 
+        public bool IsAfrica { get; set; }
+        public bool IsAsia { get; set; }
+        public bool IsEurope { get; set; }
+        public bool IsNorthAmerica { get; set; }
+        public bool IsSouthAmerica { get; set; }
 
         public Team(string path, string name)
         {
@@ -29,14 +34,19 @@ namespace RepoRepo
             Flag.Left = position.X;
             Flag.Top = position.Y;
         }
+
+
+
+
+
+
+
+        //events:
         void pictureBox_Click(object sender, EventArgs e)
         {
             string test = Name;
 
         }
-
-
-
         public void Show()
         {
             Flag.Visible = true;
