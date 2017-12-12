@@ -25,14 +25,38 @@ namespace RepoRepo
 
         private static char PositionToGroupChar(Point whereLeft)
         {
-            //logic of ifs >= <= with border
-            return 'a';
+            if (Contains(whereLeft, _groupA.BORDERPOINT1, _groupA.BORDERPOINT3))
+                return 'a';
+            if (Contains(whereLeft, _groupB.BORDERPOINT1, _groupB.BORDERPOINT3))
+                return 'b';
+            if (Contains(whereLeft, _groupC.BORDERPOINT1, _groupC.BORDERPOINT3))
+                return 'c';
+            if (Contains(whereLeft, _groupD.BORDERPOINT1, _groupD.BORDERPOINT3))
+                return 'd';
+            if (Contains(whereLeft, _groupE.BORDERPOINT1, _groupE.BORDERPOINT3))
+                return 'e';
+            if (Contains(whereLeft, _groupF.BORDERPOINT1, _groupF.BORDERPOINT3))
+                return 'f';
+            if (Contains(whereLeft, _groupG.BORDERPOINT1, _groupG.BORDERPOINT3))
+                return 'g';
+            if (Contains(whereLeft, _groupH.BORDERPOINT1, _groupH.BORDERPOINT3))
+                return 'h';
+
+            return 'x'; //<- 'x' means goes back to its place
         }
 
-        private static void FillBordersOfGroups()
+        private static bool Contains(Point belongs, Point p1, Point p3)
         {
-            //todo and hide : automates filling of group borders
+            if (belongs.X <= p3.X && belongs.Y <= p3.Y)
+                if (belongs.X >= p1.X && belongs.Y >= p1.Y)
+                    return true;
+
+            return false;
         }
+        
+
+        
+
         //for what??
         private List<string> _teamNames = new List<string>(NUMBEROFTEAMS + 1);
 
@@ -53,52 +77,63 @@ namespace RepoRepo
         }
 
         #region Groups (A->H)
-        private static Group _groupA;
+            private static Group _groupA;
             private static Group _groupB;
-        /*
-            private Group _groupC;
-            private Group _groupD;
-            private Group _groupE;
-            private Group _groupF;
-            private Group _groupG;
-            private Group _groupH;
-        */
+            private static Group _groupC;
+            private static Group _groupD;
+            private static Group _groupE;
+            private static Group _groupF;
+            private static Group _groupG;
+            private static Group _groupH;
         #endregion
 
         #region Pots (1->4)
-
             private static Pot _pot1;
             private static Pot _pot2;
             private static Pot _pot3;
             private static Pot _pot4;
-
         #endregion
         
         public static void ProcessMovement(Team team, Point whereLeft)
         {
+            if (PositionToGroupChar(whereLeft) == 'x') { team.MoveTeam(team.ReturnWhereLeftPoint()); return; }
             //call a created function that returns a bool valid position or not
-            //this.PositionToChar == PositionToGroupChar
             char groupChar = PositionToGroupChar(whereLeft);
             //can -| we return group to process directly here
-            switch (groupChar)
+
+            Group groupToProcess = CharToGroup(groupChar);
+
+            if (groupToProcess.ProcesssDroppedTeam(team))
             {
-                case 'x': return;
-                    //create a function that selects right group from char and then returns group then process returned group
-                    //this.CharToGroup(groupChar)
-                case 'a':
-                    if (_groupA.ProcesssDroppedTeam(team))
-                    {
-                        //238, 125 is position of team 1 in group A
-                        //function that returns where it should go 1-2-3-4 points in group
-                        team.MoveTeam(_groupA.PositionWhereToGo(team));//for the moment -> change to right position later
-                    } else team.MoveTeam(team.ReturnWhereLeftPoint());
-                    
-                    break;
+                //function that returns where it should go 1-2-3-4 points in group
+                team.MoveTeam(groupToProcess.PositionWhereToGo(team));//for the moment -> change to right position later
             }
+            else team.MoveTeam(team.ReturnWhereLeftPoint());
+
+
+            
+
+
             //if it's valid for a certain group give it the right position and flip its picture
             //else give it _initPoint
 
             //call return where landed
+        }
+
+        private static Group CharToGroup(char groupChar)
+        {
+            switch (groupChar)
+            {
+                case 'a': return _groupA;
+                case 'b': return _groupB;
+                case 'c': return _groupC;
+                case 'd': return _groupD;
+                case 'e': return _groupE;
+                case 'f': return _groupF;
+                case 'g': return _groupG;
+                case 'h': return _groupH;
+            }
+            throw new NullReferenceException("Engine32Teams::CharToGroup() -> invalid groupChar passed as arg");
         }
 
 
@@ -106,32 +141,34 @@ namespace RepoRepo
         {
             switch (pot)
             {
-                case 1:
-                    return _pot1.GetPictureBoxes();
-                    break;
-                case 2:
-                    return _pot2.GetPictureBoxes();
-                    break;
-                case 3:
-                    return _pot3.GetPictureBoxes();
-                    break;
-                case 4:
-                    return _pot4.GetPictureBoxes();
-                    break;
+                case 1: return _pot1.GetPictureBoxes();
+                case 2: return _pot2.GetPictureBoxes();
+                case 3: return _pot3.GetPictureBoxes();
+                case 4: return _pot4.GetPictureBoxes();
             }
-            throw new NullReferenceException("GetPotPictureBoxes -> passed pot is invalid.");
 
+            throw new NullReferenceException("Engine32Teams::GetPotPictureBoxes() -> passed pot is invalid.");
         }
 
         
 
         public Engine32Teams(Form form)
         {
-            _groupA = new Group(new Point(220, 80), new Point(420, 80), new Point(220, 320), new Point(420, 320));
-            
+            //238, 125 is position of team 1 in group A
+
+            _groupA = new Group(new Point(220, 80), new Point(420, 320), new Point(238, 125));
+            _groupB = new Group(new Point(420, 80), new Point(620, 320), new Point(458, 125));
+            _groupC = new Group(new Point(620, 80), new Point(820, 320), new Point(678, 125));
+            _groupD = new Group(new Point(820, 80), new Point(1020, 320), new Point(898, 125));
+
+            _groupE = new Group(new Point(220, 323), new Point(420, 563), new Point(238, 368));
+            _groupF = new Group(new Point(420, 323), new Point(620, 563), new Point(458, 368));
+            _groupG = new Group(new Point(620, 323), new Point(820, 563), new Point(678, 368));
+            _groupH = new Group(new Point(820, 323), new Point(1020, 563), new Point(898, 368));
+
             _form = form;
             FillInitialPositions();
-            FillBordersOfGroups();
+            
             _pot1 = new Pot(FillPotFromDataBase(POT1.ToString()));
             _pot2 = new Pot(FillPotFromDataBase(POT2.ToString()));
             _pot3 = new Pot(FillPotFromDataBase(POT3.ToString()));

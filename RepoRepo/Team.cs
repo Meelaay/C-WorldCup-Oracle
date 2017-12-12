@@ -131,7 +131,8 @@ namespace RepoRepo
 
         public Point ReturnWhereLeftPoint()
         {
-            return _whereLeftPoint;
+
+            return _initialPoint;
         }
 
         //events:

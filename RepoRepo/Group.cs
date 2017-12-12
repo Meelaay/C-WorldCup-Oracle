@@ -11,15 +11,15 @@ namespace RepoRepo
         //todo group should it know about pots logic ? or just stuff inside itself ? 
         //todo is it the engine property to manage right team from right pot to the right group ? so should it have the logic ?
 
-        public readonly Point BORDERPOINT1;
-        public readonly Point BORDERPOINT2;
-        public readonly Point BORDERPOINT3;
-        public readonly Point BORDERPOINT4;
+        public  Point BORDERPOINT1;
+        public  Point BORDERPOINT2;
+        public  Point BORDERPOINT3;
+        public  Point BORDERPOINT4;
 
-        public readonly Point TEAM1POSITION;
-        public readonly Point TEAM2POSITION;
-        public readonly Point TEAM3POSITION;
-        public readonly Point TEAM4POSITION;
+        public  Point TEAM1POSITION;
+        public  Point TEAM2POSITION;
+        public  Point TEAM3POSITION;
+        public  Point TEAM4POSITION;
         //...4
 
         private int _meter = 0; //could be subs with count-1
@@ -38,22 +38,45 @@ namespace RepoRepo
         public bool IsPot3 { get; set; }
         public bool IsPot4 { get; set; }
         
-        public Group(Point border1, Point border2, Point border3, Point border4)
+        public Group(Point p1, Point p3, Point firstElement)
         {
             _meter = 0;
-            //init POSTEAMS
-            TEAM1POSITION = new Point(238, 125);
-            TEAM2POSITION = new Point(238, 150);
-            TEAM3POSITION = new Point(238, 175);
-            TEAM4POSITION = new Point(238, 200);
 
-            IsAfrica = IsEuropeFirst = IsAsia = IsEuropeSecond = IsNorthAmerica = IsSouthAmerica = false;
+            FillBordersOfGroup(p1, p3);
+            FillTeamPositionsInGroup(firstElement);
+
+            IsAfrica = IsEuropeFirst = IsAsia = IsEuropeSecond = IsNorthAmerica = IsSouthAmerica
+                     = IsPot1 = IsPot2 = IsPot3 = IsPot4 = false;
+
             _group.Add(null);
-            BORDERPOINT1 = border1;
-            BORDERPOINT2 = border2;
-            BORDERPOINT3 = border3;
-            BORDERPOINT4 = border4;
+            
+
         }
+        private void FillBordersOfGroup(Point p1, Point p3)
+        {
+            //todo and hide : automates filling of group borders
+            Point p2 = new Point(p3.X, p1.Y);
+            Point p4 = new Point(p1.X, p3.Y);
+
+            BORDERPOINT1 = p1;
+            BORDERPOINT2 = p2;
+            BORDERPOINT3 = p3;
+            BORDERPOINT4 = p4;
+        }
+        private void FillTeamPositionsInGroup(Point firstElement)
+        {
+            //pass the first one as arg and then += y
+            int x = firstElement.X; int y = firstElement.Y;
+
+            TEAM1POSITION = new Point(x, y);
+            y += 41;
+            TEAM2POSITION = new Point(x, y);
+            y += 41;
+            TEAM3POSITION = new Point(x, y);
+            y += 41;
+            TEAM4POSITION = new Point(x, y);
+        }
+
 
         public bool AddTeamToGroup(Team teamToAdd)
         {
@@ -135,58 +158,76 @@ namespace RepoRepo
         
         private bool IsValidForInsertionPotWise(Team team)
         {
-            //add logic here and return false if not
+            switch (team.Pot)
+            {
+                case 1:
+                    if (IsPot1) return false;
+                    break;
+                case 2:
+                    if (IsPot2) return false;
+                    break;
+                case 3:
+                    if (IsPot3) return false;
+                    break;
+                case 4:
+                    if (IsPot4) return false;
+                    break;
+            }
+            
             return true;
         }
 
         private bool IsValidForInsertionContinentWise(Team team)
         {
-            //logic if valid for insertion
-            return true;
-            /*
-            if (_group.Count == 1)
+            const int EMPTY = 1;
+            if (_group.Count == EMPTY)
             {
                 return true;
             }
+
             if (team.IsAfrica)
             {
                 if (this.IsAfrica)
                 {
                     return false;
                 }
-            }else if (team.IsAsia)
+            }
+            if (team.IsAsia)
             {
                 if (this.IsAsia)
                 {
                     return false;
                 }
-            }else if (team.IsEurope)
+            }
+            if (team.IsEurope)
             {
-                if (this.IsEuropeFirst)
-                {
-                    IsEuropeSecond = true;                  //todo <============== be careful with this statement
-                    return true;
-                }
                 if (this.IsEuropeSecond)
                 {
                     return false;
                 }
-            }else if (team.IsSouthAmerica)
+                if (this.IsEuropeFirst)
+                {
+                    return true;
+                }
+                
+            }
+            
+            if (team.IsSouthAmerica)
             {
                 if (this.IsSouthAmerica)
                 {
                     return false;
                 }
-            } else if (IsNorthAmerica)
+            }
+            if (team.IsNorthAmerica)
             {
                 if (this.IsNorthAmerica)
                 {
                     return false;
                 }
             }
-            */
-            //handle when group is full
-            throw new Exception("IsValidInsertion() -> Unhandled case of a team.");
+
+            return true;
         }
 
         
@@ -194,7 +235,7 @@ namespace RepoRepo
         private bool IsGroupComplete()
         {
             //check count of list == 5 ?
-            return false;
+            return (_meter == 4);
             
         }
 
@@ -217,7 +258,43 @@ namespace RepoRepo
         {
             //think of before adding
             //add exception if ggroup is full and insertions are trying to happen
+            switch (teamToAdd.Pot)
+            {
+                case 1:
+                    this.IsPot1 = true;
+                    break;
+                case 2:
+                    this.IsPot2 = true;
+                    break;
+                case 3:
+                    this.IsPot3 = true;
+                    break;
+                case 4:
+                    this.IsPot4 = true;
+                    break;
+            }
+            switch (teamToAdd.Continent)
+            {
+                case "africa":
+                    this.IsAfrica = true;
+                    break;
+                case "asia":
+                    this.IsAsia = true;
+                    break;
+                case "europe":
+                    if (this.IsEuropeFirst) this.IsEuropeSecond = true;
+                    else                    this.IsEuropeFirst = true;
+                    break;
+                case "northamerica":
+                    this.IsNorthAmerica = true;
+                    break;
+                case "southamerica":
+                    this.IsSouthAmerica = true;
+                    break;
+            }
             this._group.Add(teamToAdd);
+            
+            //TODO set pot and continent bools after insertion
             _meter++;
             //set state of group after adding team
         }
