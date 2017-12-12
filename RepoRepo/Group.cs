@@ -40,9 +40,13 @@ namespace RepoRepo
         
         public Group(Point border1, Point border2, Point border3, Point border4)
         {
-            //init meter
+            _meter = 0;
             //init POSTEAMS
-            TEAM1POSITION = border1;
+            TEAM1POSITION = new Point(238, 125);
+            TEAM2POSITION = new Point(238, 150);
+            TEAM3POSITION = new Point(238, 175);
+            TEAM4POSITION = new Point(238, 200);
+
             IsAfrica = IsEuropeFirst = IsAsia = IsEuropeSecond = IsNorthAmerica = IsSouthAmerica = false;
             _group.Add(null);
             BORDERPOINT1 = border1;
@@ -104,17 +108,19 @@ namespace RepoRepo
             //todo make method that returns si appartient a la zone 
             if (!IsGroupComplete())
             {
-                    if (IsValidForInsertionPotWise(droppedTeam))
+                if (IsValidForInsertionPotWise(droppedTeam))
+                {
+                    if (IsValidForInsertionContinentWise(droppedTeam))
                     {
-                        if (IsValidForInsertionContinentWise(droppedTeam))
-                        {
-                            AddTeam(droppedTeam);
-                            return true;
-                        }
+                        AddTeam(droppedTeam);
+                        return true;
                     }
-                else return false;
+                    return false;
+                }
+                return false;
             }
-            
+            return false;
+
 
             throw new Exception("ProcessDroppedTeam() -> Unhandled exception (neither false or true)");
             //todo method if appartient is it valid selon pot and group
@@ -136,6 +142,8 @@ namespace RepoRepo
         private bool IsValidForInsertionContinentWise(Team team)
         {
             //logic if valid for insertion
+            return true;
+            /*
             if (_group.Count == 1)
             {
                 return true;
@@ -176,6 +184,7 @@ namespace RepoRepo
                     return false;
                 }
             }
+            */
             //handle when group is full
             throw new Exception("IsValidInsertion() -> Unhandled case of a team.");
         }
@@ -194,7 +203,7 @@ namespace RepoRepo
             switch (team.Pot) //sub with count of list
             {
                 case 1: return this.TEAM1POSITION;
-                case 2: return this.TEAM1POSITION;
+                case 2: return this.TEAM2POSITION;
                 case 3: return this.TEAM3POSITION;
                 case 4: return this.TEAM4POSITION;
             }

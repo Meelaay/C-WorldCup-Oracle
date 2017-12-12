@@ -119,6 +119,8 @@ namespace RepoRepo
             a.Location = _initialPoint;
             
             Engine32Teams.ProcessMovement(this, _whereLeftPoint);
+
+            //TODO on release freeze team in position
         }
 
         public void MoveTeam(Point destination)
@@ -127,9 +129,9 @@ namespace RepoRepo
             Flag.Top = destination.Y;
         }
 
-        public Point ReturnWhereLanded()
+        public Point ReturnWhereLeftPoint()
         {
-            return new Point();
+            return _whereLeftPoint;
         }
 
         //events:

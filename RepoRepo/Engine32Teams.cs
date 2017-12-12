@@ -23,7 +23,7 @@ namespace RepoRepo
 
         private static List<Point> _initialPositionsList = new List<Point>(NUMBEROFTEAMS + 1);
 
-        private static char PositionToGroup(Point whereLeft)
+        private static char PositionToGroupChar(Point whereLeft)
         {
             //logic of ifs >= <= with border
             return 'a';
@@ -31,7 +31,7 @@ namespace RepoRepo
 
         private static void FillBordersOfGroups()
         {
-            //todo and hide
+            //todo and hide : automates filling of group borders
         }
         //for what??
         private List<string> _teamNames = new List<string>(NUMBEROFTEAMS + 1);
@@ -77,7 +77,8 @@ namespace RepoRepo
         public static void ProcessMovement(Team team, Point whereLeft)
         {
             //call a created function that returns a bool valid position or not
-            char groupChar = PositionToGroup(whereLeft);
+            //this.PositionToChar == PositionToGroupChar
+            char groupChar = PositionToGroupChar(whereLeft);
             //can -| we return group to process directly here
             switch (groupChar)
             {
@@ -90,7 +91,7 @@ namespace RepoRepo
                         //238, 125 is position of team 1 in group A
                         //function that returns where it should go 1-2-3-4 points in group
                         team.MoveTeam(_groupA.PositionWhereToGo(team));//for the moment -> change to right position later
-                    }
+                    } else team.MoveTeam(team.ReturnWhereLeftPoint());
                     
                     break;
             }
