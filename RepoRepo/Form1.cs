@@ -18,11 +18,11 @@ namespace RepoRepo
         {
             InitializeComponent();
 
-            engine32 = new Engine32Teams();
-
+            engine32 = new Engine32Teams(this);
                         
             this.Size = new Size((int) (Engine32Teams.MENUBOX.Width * 1.25) + 200,
-                (int) (Engine32Teams.MENUBOX.Height * 1.25));
+                                 (int) (Engine32Teams.MENUBOX.Height * 1.25)
+                                );
             
             StartPosition = FormStartPosition.CenterScreen;
 
