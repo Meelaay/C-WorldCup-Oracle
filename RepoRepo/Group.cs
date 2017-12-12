@@ -69,11 +69,11 @@ namespace RepoRepo
             int x = firstElement.X; int y = firstElement.Y;
 
             TEAM1POSITION = new Point(x, y);
-            y += 41;
+            y += 42;
             TEAM2POSITION = new Point(x, y);
             y += 41;
             TEAM3POSITION = new Point(x, y);
-            y += 41;
+            y += 42;
             TEAM4POSITION = new Point(x, y);
         }
 
@@ -144,8 +144,6 @@ namespace RepoRepo
             }
             return false;
 
-
-            throw new Exception("ProcessDroppedTeam() -> Unhandled exception (neither false or true)");
             //todo method if appartient is it valid selon pot and group
 
             //todo create method that takes continent as arg and set bools to true value
@@ -181,51 +179,32 @@ namespace RepoRepo
         {
             const int EMPTY = 1;
             if (_group.Count == EMPTY)
-            {
                 return true;
-            }
 
             if (team.IsAfrica)
-            {
                 if (this.IsAfrica)
-                {
                     return false;
-                }
-            }
+
             if (team.IsAsia)
-            {
                 if (this.IsAsia)
-                {
                     return false;
-                }
-            }
+
             if (team.IsEurope)
             {
                 if (this.IsEuropeSecond)
-                {
                     return false;
-                }
+
                 if (this.IsEuropeFirst)
-                {
                     return true;
-                }
-                
             }
             
             if (team.IsSouthAmerica)
-            {
                 if (this.IsSouthAmerica)
-                {
                     return false;
-                }
-            }
+
             if (team.IsNorthAmerica)
-            {
                 if (this.IsNorthAmerica)
-                {
                     return false;
-                }
-            }
 
             return true;
         }

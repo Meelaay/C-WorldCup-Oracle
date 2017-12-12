@@ -58,7 +58,19 @@ namespace RepoRepo
             
             return dt;
         }
+        public static Team RowToTeam(DataRow row)
+        {
+            string name = row["COUNTRY"].ToString();
+            string continent = row["CONTINENT"].ToString();
+            string pot = row["POT"].ToString();
 
+            string path = @"..\..\Sprites\teams\" + name + ".png";
+
+            Team team = new Team(path, name, continent, pot);
+            if (string.IsNullOrWhiteSpace(path) || string.IsNullOrWhiteSpace(name)) throw new NullReferenceException("RowToTeam() -> path or name is empty.");
+
+            return team;
+        }
 
         /* initial ExecuteQuery() with test
         private DataTable ExecuteQuery(string query)
@@ -84,7 +96,7 @@ namespace RepoRepo
         }
         */
 
-        
+
 
 
 
