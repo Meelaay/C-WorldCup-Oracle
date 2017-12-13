@@ -77,11 +77,15 @@ namespace RepoRepo
             debugTextBox.Text = e.Location.ToString();
         }
 
-        /*
-        private void button1_Click(object sender, EventArgs e)
+        private void manualToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            DataBaseConnection a = new DataBaseConnection();
-            a.EstablishConnection();
-        }*/
+            //manual implementation
+        }
+
+        private void automaticToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            //automatic impl..
+        }
+
     }
 }

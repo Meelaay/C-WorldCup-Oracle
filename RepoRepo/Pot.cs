@@ -7,8 +7,8 @@ namespace RepoRepo
 {
     public class Pot
     {
-        private List<Point> _teamPositions = new List<Point>(capacity: 5);
         private List<Team> _potTeams;
+        private static readonly Random _randomizer = new Random();
 
         //todo think of what should each pot have and know about in terms of properties, should it return a specific team for the group to process?
 
@@ -18,6 +18,17 @@ namespace RepoRepo
                 throw new NullReferenceException("Constructor -> list arg passed is empty or null");
             
             _potTeams = list;
+        }
+
+        public void RemoveTeamFromPot(Team team)
+        {
+            _potTeams.Remove(team);
+
+        }
+
+        public Team GetRandomTeam()
+        {
+            return _potTeams[_randomizer.Next(_potTeams.Count)];
         }
 
         public List<PictureBox> GetPictureBoxes()

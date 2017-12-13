@@ -20,8 +20,10 @@ namespace RepoRepo
 
         private static readonly DataBaseConnection _connector = new DataBaseConnection();
         private const int NUMBEROFTEAMS = 32;
-        private static List<Point> _initialPositionsList = new List<Point>(NUMBEROFTEAMS + 1);
+        private static List<Point> _initialPositionsList = new List<Point>(NUMBEROFTEAMS);
         private Form _form;
+        private static int _totalTeamsCount = 0;
+
         
         public static PictureBox MENUBOX { get; set; }
 
@@ -78,14 +80,16 @@ namespace RepoRepo
 
             Group groupToProcess = CharToGroup(groupChar);
 
-            if (groupToProcess.ProcesssDroppedTeam(team))
+            if (groupToProcess.ProcesssDroppedTeam(team, groupChar))
             {
-                //function that returns where it should go 1-2-3-4 points in group
-                team.MoveTeam(groupToProcess.PositionWhereToGo(team));//for the moment -> change to right position later
+                //function that returns where it should go 1-2-3-4 POSITION points in group
+                team.MoveTeam(groupToProcess.PositionWhereToGo(team));
+                ++_totalTeamsCount;
                 //POP FROM POT
-                //++_totalTeamCount; 
+                RemoveTeamFromPot(team);
+                //check if working
+                team.ShowTeam();
                 //CHANGE STATE OF TEAM (GROUP)
-                
             }
             else team.MoveTeam(team.ReturnWhereLeftPoint());
 
@@ -94,6 +98,25 @@ namespace RepoRepo
             //else give it _initPoint
 
             //call return where landed
+        }
+
+        private static void RemoveTeamFromPot(Team team)
+        {
+            switch (team.Pot)
+            {
+                case 1:
+                    _pot1.RemoveTeamFromPot(team);
+                    return;
+                case 2:
+                    _pot2.RemoveTeamFromPot(team);
+                    return;
+                case 3:
+                    _pot3.RemoveTeamFromPot(team);
+                    return;
+                case 4:
+                    _pot4.RemoveTeamFromPot(team);
+                    return;
+            }
         }
 
         private static Group CharToGroup(char groupChar)
@@ -185,7 +208,7 @@ namespace RepoRepo
             foreach (DataRow row in dt.Rows)
             {
                 var team = DataBaseConnection.RowToTeam(row);
-                team.SetFlagPosition(_initialPositionsList[++i]);
+                team.SetFlagPosition(_initialPositionsList[i++]);
                 teamsListOfPot.Add(team);
             }
 
@@ -196,22 +219,24 @@ namespace RepoRepo
 
         private void FillInitialPositions()
         {
-            _initialPositionsList.Add(new Point(-1, -1));
             const int OFFSET_OF_FLAGS_FROM_LEFT = 7;
-            const int OFFSET_OF_FLAGS_FROM_TOP = 0;
+            
+            //BUG this was 0 and changed to fix offset -> results of this change are unkown
+            const int OFFSET_OF_FLAGS_FROM_TOP = 25;
+
 
             Point position = new Point(OFFSET_OF_FLAGS_FROM_LEFT, OFFSET_OF_FLAGS_FROM_TOP);
 
-            for (int i = 1; i <= NUMBEROFTEAMS; i++)
+            for (int i = 0; i <= NUMBEROFTEAMS; i++)
             {
                 _initialPositionsList.Add(position);
 
                 position.Y += 38;
 
-                if (i == 16)
+                if (i == 15)
                 {
                     position.X += 1119;
-                    position.Y = 0;
+                    position.Y = OFFSET_OF_FLAGS_FROM_TOP;
                 }
             }
         }

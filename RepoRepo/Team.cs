@@ -22,13 +22,24 @@ namespace RepoRepo
 
         //todo add pot of every team? or maybe a bool that represent the continent
 
+        #region Continent Bools
         public bool IsAfrica { get; set; }
         public bool IsAsia { get; set; }
         public bool IsEurope { get; set; }
         public bool IsNorthAmerica { get; set; }
         public bool IsSouthAmerica { get; set; }
+        #endregion
 
+        private static readonly Image _pot1Image = Image.FromFile(@"..\..\Sprites\pots\pot1.png");
+        private static readonly Image _pot2Image = Image.FromFile(@"..\..\Sprites\pots\pot2.png");
+        private static readonly Image _pot3Image = Image.FromFile(@"..\..\Sprites\pots\pot3.png");
+        private static readonly Image _pot4Image = Image.FromFile(@"..\..\Sprites\pots\pot4.png");
+        private Image _initialImage;
+        private MouseEventHandler a ;
+        private MouseEventHandler b ;
+        private MouseEventHandler c ;
 
+        
 
         public Team(string path, string name, string continent, string pot)
         {
@@ -37,21 +48,50 @@ namespace RepoRepo
             this.Pot = Convert.ToInt32(pot);
             this.InitContinentBools(continent);
             this.Name = name;
+            _initialImage = Image.FromFile(path);
             this.Flag = new PictureBox {Image = Image.FromFile(path)};
             this.Flag.Size = new Size((int)(Flag.Image.Width / 1.25), (int)(Flag.Image.Height / 1.25));
             this.Flag.SizeMode = PictureBoxSizeMode.StretchImage;
 
-            
-
             //todo adding events to every team (picbox of a team) add here events for drag and drop
-            var a = new MouseEventHandler(flag_mouseDown);
-            var b = new MouseEventHandler(flag_mouseMove);
-            var c = new MouseEventHandler(flag_mouseUp);
+            a = new MouseEventHandler(flag_mouseDown);
+            b = new MouseEventHandler(flag_mouseMove);
+            c = new MouseEventHandler(flag_mouseUp);
 
             this.Flag.MouseDown += a;
             this.Flag.MouseMove += b;
             this.Flag.MouseUp += c;
+
+            HideTeam(); //<-- BUG probably not right spot
         }
+
+        public void HideTeam()
+        {
+
+            switch (Pot)
+            {
+                case 1: Flag.Image = _pot1Image; return;
+                case 2: Flag.Image = _pot2Image; return;
+                case 3: Flag.Image = _pot3Image; return;
+                case 4: Flag.Image = _pot4Image; return;
+            }
+        }
+
+        
+        public void ShowTeam()
+        {
+            Flag.Image = _initialImage;
+        }
+
+        public void RemoveEvents()
+        {
+            //todo check for null or exception
+            Flag.MouseDown -= a;
+            Flag.MouseMove -= b;
+            Flag.MouseUp -= c;
+        }
+
+
 
         private void InitContinentBools(string continent)
         {
@@ -76,10 +116,7 @@ namespace RepoRepo
             throw new Exception("InitContinentBools() -> invalid continent check passed arg.");
         }
 
-        private void SetPot(string pot)
-        {
-
-        }
+        
 
         public void SetFlagPosition(Point position)
         {
@@ -131,7 +168,6 @@ namespace RepoRepo
 
         public Point ReturnWhereLeftPoint()
         {
-
             return _initialPoint;
         }
 

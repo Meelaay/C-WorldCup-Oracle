@@ -23,7 +23,6 @@ namespace RepoRepo
         public Point TEAM4POSITION;
         #endregion
 
-        private int _meter = 0; //could be subs with count-1
 
         public bool IsComplete { get; set; } //could be substituted with count of list == 5
 
@@ -41,7 +40,6 @@ namespace RepoRepo
         
         public Group(Point p1, Point p3, Point firstElement)
         {
-            _meter = 0;
 
             FillBordersOfGroup(p1, p3);
             FillTeamPositionsInGroup(firstElement);
@@ -49,10 +47,12 @@ namespace RepoRepo
             IsAfrica = IsEuropeFirst = IsAsia = IsEuropeSecond = IsNorthAmerica = IsSouthAmerica
                      = IsPot1 = IsPot2 = IsPot3 = IsPot4 = false;
 
-            _group.Add(null);
-            
+            //BUG list was 1 indexed
+            //_group.Add(null);
+
 
         }
+
         private void FillBordersOfGroup(Point p1, Point p3)
         {
             //todo and hide : automates filling of group borders
@@ -121,14 +121,12 @@ namespace RepoRepo
             return false;
         }
 
-
-
         //todo put GetPosition as a static func in ENGINE
 
-        public bool ProcesssDroppedTeam(Team droppedTeam)
+        public bool ProcesssDroppedTeam(Team droppedTeam, char groupChar)
         {
             //todo method if you could SET BOOLS IN CTOR TO FALSE OR RIGHT THING FIX YOUR STUFF
-
+            
             //todo make method that returns si appartient a la zone 
             if (!IsGroupComplete())
             {
@@ -136,7 +134,7 @@ namespace RepoRepo
                 {
                     if (IsValidForInsertionContinentWise(droppedTeam))
                     {
-                        AddTeam(droppedTeam);
+                        AddTeam(droppedTeam, groupChar);
                         return true;
                     }
                     return false;
@@ -144,7 +142,6 @@ namespace RepoRepo
                 return false;
             }
             return false;
-
             //todo method if appartient is it valid selon pot and group
 
             //todo create method that takes continent as arg and set bools to true value
@@ -178,8 +175,8 @@ namespace RepoRepo
 
         private bool IsValidForInsertionContinentWise(Team team)
         {
-            const int EMPTY = 1;
-            if (_group.Count == EMPTY)
+            
+            if (_group.Count == 0)
                 return true;
 
             if (team.IsAfrica)
@@ -215,9 +212,7 @@ namespace RepoRepo
 
         private bool IsGroupComplete()
         {
-            //check count of list == 5 ?
-            return (_meter == 4);
-            
+            return (_group.Count == 4);
         }
 
         public Point PositionWhereToGo(Team team)
@@ -235,10 +230,12 @@ namespace RepoRepo
         /// <summary>
         /// USE WITH CAUTION, ADD ONLY IF TEAM IS VALID FOR INSERTION OR YOU RISK LOOSING INTEGRITY OF GROUP
         /// </summary>
-        private void AddTeam(Team teamToAdd)
+        private void AddTeam(Team teamToAdd, char groupChar)
         {
             //think of before adding
             //add exception if ggroup is full and insertions are trying to happen
+
+            #region switch on teamToAdd.Pot
             switch (teamToAdd.Pot)
             {
                 case 1:
@@ -254,7 +251,9 @@ namespace RepoRepo
                     this.IsPot4 = true;
                     break;
             }
+            #endregion
 
+            #region switch on teamToAdd.Continent 
             switch (teamToAdd.Continent)
             {
                 case "africa":
@@ -265,7 +264,7 @@ namespace RepoRepo
                     break;
                 case "europe":
                     if (this.IsEuropeFirst) this.IsEuropeSecond = true;
-                    else                    this.IsEuropeFirst = true;
+                    else this.IsEuropeFirst = true;
                     break;
                 case "northamerica":
                     this.IsNorthAmerica = true;
@@ -274,14 +273,12 @@ namespace RepoRepo
                     this.IsSouthAmerica = true;
                     break;
             }
-
-            teamToAdd.Group = "XXXXXX"; //todo set group of team here 
+            #endregion
 
             this._group.Add(teamToAdd);
-            
-            //TODO set pot and continent bools after insertion
-            _meter++;
-            //set state of group after adding team
+            teamToAdd.RemoveEvents();
+            teamToAdd.Group = groupChar.ToString();
+
         }
         
     }
