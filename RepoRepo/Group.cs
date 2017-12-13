@@ -23,6 +23,10 @@ namespace RepoRepo
         public Point TEAM4POSITION;
         #endregion
 
+        public List<Team> GetGroupTeams()
+        {
+            return _group;
+        }
 
         public bool IsComplete { get; set; } //could be substituted with count of list == 5
 

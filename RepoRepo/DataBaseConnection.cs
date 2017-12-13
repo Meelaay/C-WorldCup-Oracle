@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -34,12 +35,42 @@ namespace RepoRepo
 
             _myConnection.ConnectionString = ConnectionString;
         }
-        
+
+        public static void AddMatchToDataBase()
+        {
+            
+        }
+
         public void EstablishConnection()
         {
             var a = ExecuteQuery("select * from test");
 
         }
+
+        public void MigrateToDataBase(Group groupA, Group groupB, Group groupC, Group groupD,
+                                      Group groupE, Group groupF, Group groupG, Group groupH )
+        {
+            //transfer all foreach redundant logic from engine here and call this once
+            Team team = new Team(null, null,null, null);
+            UpdateTeamInDataBase(team);
+        }
+
+        public void UpdateTeamInDataBase(Team newTeam)
+        {
+            string query = string.Format("UPDATE teams SET groupT = '{0}' WHERE country = '{1}'",
+                                          newTeam.Group, newTeam.Name);
+            _myConnection.Open();
+            OracleCommand cmd = new OracleCommand(query);
+            cmd.CommandType = CommandType.Text;
+            cmd.Connection = _myConnection;
+            int rowsAffected = cmd.ExecuteNonQuery();
+            if (rowsAffected != 1)
+            {
+                throw new Exception("DataBaseConnection::UpdateTeamInDataBase() -> rowsAffected != 1");
+            }
+            _myConnection.Close();
+        }
+
 
         internal DataTable ExecuteQuery(string query)
         {

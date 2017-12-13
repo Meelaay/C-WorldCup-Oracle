@@ -24,11 +24,12 @@ namespace RepoRepo
              *      -remove background from pieces 
              *      -change pictureBox to Pot1...
              */
+            buttonValidate.Enabled = false;
 
-            engine32 = new Engine32Teams(this);
+            engine32 = new Engine32Teams(this, buttonValidate);
                         
             this.Size = new Size((int) (Engine32Teams.MENUBOX.Width * 1.25) + 200,
-                                 (int) (Engine32Teams.MENUBOX.Height * 1.25)
+                                 (int) (Engine32Teams.MENUBOX.Height * 1.18)
                                 );
             
             StartPosition = FormStartPosition.CenterScreen;
@@ -60,10 +61,7 @@ namespace RepoRepo
 
         private void Form1_MouseUp(object sender, MouseEventArgs e)
         {
-            Point buttonPosition = new Point(0, 0);
-
-            debugTextBox.Text = GetPosition(pictureBox1).ToString();
-            debugTextBox.AppendText(e.Location.ToString());
+            
 
         }
 
@@ -74,7 +72,7 @@ namespace RepoRepo
 
         private void pictureBox1_MouseUp(object sender, MouseEventArgs e)
         {
-            debugTextBox.Text = e.Location.ToString();
+            
         }
 
         private void manualToolStripMenuItem_Click(object sender, EventArgs e)
@@ -87,5 +85,9 @@ namespace RepoRepo
             //automatic impl..
         }
 
+        private void buttonValidate_Click(object sender, EventArgs e)
+        {
+            Engine32Teams.ValidateClicked();
+        }
     }
 }

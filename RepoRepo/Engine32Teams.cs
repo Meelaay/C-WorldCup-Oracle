@@ -17,13 +17,12 @@ namespace RepoRepo
         public const int POT2 = 2;
         public const int POT3 = 3;
         public const int POT4 = 4;
-
+        private static Button _validationButton;
         private static readonly DataBaseConnection _connector = new DataBaseConnection();
         private const int NUMBEROFTEAMS = 32;
         private static List<Point> _initialPositionsList = new List<Point>(NUMBEROFTEAMS);
         private Form _form;
         private static int _totalTeamsCount = 0;
-
         
         public static PictureBox MENUBOX { get; set; }
 
@@ -46,13 +45,13 @@ namespace RepoRepo
         #endregion
         
 
-        public Engine32Teams(Form form)
+        public Engine32Teams(Form form, Button validationButton)
         {
             //238, 125 is position of team 1 in group A
             FillInitialPositions();
             SetMenuBox();
-            _form = form;
-
+            _form = form;                   //BUG throw away at the end if not needed
+            _validationButton = validationButton;
             _groupA = new Group(new Point(220, 80), new Point(420, 320), new Point(238, 125));
             _groupB = new Group(new Point(420, 80), new Point(620, 320), new Point(458, 125));
             _groupC = new Group(new Point(620, 80), new Point(820, 320), new Point(678, 125));
@@ -62,7 +61,6 @@ namespace RepoRepo
             _groupF = new Group(new Point(420, 323), new Point(620, 563), new Point(458, 368));
             _groupG = new Group(new Point(620, 323), new Point(820, 563), new Point(678, 368));
             _groupH = new Group(new Point(820, 323), new Point(1020, 563), new Point(898, 368));
-            
             
             _pot1 = new Pot(FillPotFromDataBase(POT1.ToString()));
             _pot2 = new Pot(FillPotFromDataBase(POT2.ToString()));
@@ -90,6 +88,7 @@ namespace RepoRepo
                 //check if working
                 team.ShowTeam();
                 //CHANGE STATE OF TEAM (GROUP)
+                CheckIfDrawn();
             }
             else team.MoveTeam(team.ReturnWhereLeftPoint());
 
@@ -98,6 +97,45 @@ namespace RepoRepo
             //else give it _initPoint
 
             //call return where landed
+        }
+
+        public static void ValidateClicked()
+        {
+            UpdateGroupForEachTeamInDataBase();
+        }
+
+        //BUG to be transfered as static method to DataBaseConnection
+        private static void UpdateGroupForEachTeamInDataBase()
+        {
+            foreach (var team in _groupA.GetGroupTeams())
+                _connector.UpdateTeamInDataBase(team);
+            foreach (var team in _groupB.GetGroupTeams())
+                _connector.UpdateTeamInDataBase(team);
+            foreach (var team in _groupC.GetGroupTeams())
+                _connector.UpdateTeamInDataBase(team);
+            foreach (var team in _groupD.GetGroupTeams())
+                _connector.UpdateTeamInDataBase(team);
+            foreach (var team in _groupE.GetGroupTeams())
+                _connector.UpdateTeamInDataBase(team);
+            foreach (var team in _groupF.GetGroupTeams())
+                _connector.UpdateTeamInDataBase(team);
+            foreach (var team in _groupG.GetGroupTeams())
+                _connector.UpdateTeamInDataBase(team);
+            foreach (var team in _groupH.GetGroupTeams())
+                _connector.UpdateTeamInDataBase(team);
+        }
+
+        private static void ScheduleMatches()
+        {
+            
+        }
+
+        private static void CheckIfDrawn()
+        {
+            if (_totalTeamsCount == NUMBEROFTEAMS)
+            {
+                _validationButton.Enabled = true;
+            }
         }
 
         private static void RemoveTeamFromPot(Team team)
@@ -179,7 +217,7 @@ namespace RepoRepo
             throw new NullReferenceException("Engine32Teams::GetPotPictureBoxes() -> passed pot is invalid.");
         }
 
-        private void SetMenuBox()
+        private static void SetMenuBox()
         {
             Image menu = Image.FromFile(@"..\..\Sprites\main\menu1.png");
             MENUBOX = new PictureBox();
@@ -217,7 +255,7 @@ namespace RepoRepo
 
         }
 
-        private void FillInitialPositions()
+        private static void FillInitialPositions()
         {
             const int OFFSET_OF_FLAGS_FROM_LEFT = 7;
             
