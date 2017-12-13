@@ -82,6 +82,10 @@ namespace RepoRepo
             {
                 //function that returns where it should go 1-2-3-4 points in group
                 team.MoveTeam(groupToProcess.PositionWhereToGo(team));//for the moment -> change to right position later
+                //POP FROM POT
+                //++_totalTeamCount; 
+                //CHANGE STATE OF TEAM (GROUP)
+                
             }
             else team.MoveTeam(team.ReturnWhereLeftPoint());
 

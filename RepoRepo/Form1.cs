@@ -17,6 +17,13 @@ namespace RepoRepo
         public Form1()
         {
             InitializeComponent();
+            /**
+             * Ways to improve UI :
+             *      -make background color red, black or something != white
+             *      -change to all red spaces in group area
+             *      -remove background from pieces 
+             *      -change pictureBox to Pot1...
+             */
 
             engine32 = new Engine32Teams(this);
                         

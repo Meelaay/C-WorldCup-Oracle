@@ -11,16 +11,17 @@ namespace RepoRepo
         //todo group should it know about pots logic ? or just stuff inside itself ? 
         //todo is it the engine property to manage right team from right pot to the right group ? so should it have the logic ?
 
-        public  Point BORDERPOINT1;
-        public  Point BORDERPOINT2;
-        public  Point BORDERPOINT3;
-        public  Point BORDERPOINT4;
+        #region Group : Borders and positions
+        public Point BORDERPOINT1;
+        public Point BORDERPOINT2;
+        public Point BORDERPOINT3;
+        public Point BORDERPOINT4;
 
-        public  Point TEAM1POSITION;
-        public  Point TEAM2POSITION;
-        public  Point TEAM3POSITION;
-        public  Point TEAM4POSITION;
-        //...4
+        public Point TEAM1POSITION;
+        public Point TEAM2POSITION;
+        public Point TEAM3POSITION;
+        public Point TEAM4POSITION;
+        #endregion
 
         private int _meter = 0; //could be subs with count-1
 
@@ -211,6 +212,7 @@ namespace RepoRepo
 
         
 
+
         private bool IsGroupComplete()
         {
             //check count of list == 5 ?
@@ -227,7 +229,7 @@ namespace RepoRepo
                 case 3: return this.TEAM3POSITION;
                 case 4: return this.TEAM4POSITION;
             }
-            throw new Exception("Team::PositionWhereToGo() -> Unvalid _meter");
+            throw new Exception("Group::PositionWhereToGo() -> Unvalid _meter");
         }
 
         /// <summary>
@@ -252,6 +254,7 @@ namespace RepoRepo
                     this.IsPot4 = true;
                     break;
             }
+
             switch (teamToAdd.Continent)
             {
                 case "africa":
@@ -271,6 +274,9 @@ namespace RepoRepo
                     this.IsSouthAmerica = true;
                     break;
             }
+
+            teamToAdd.Group = "XXXXXX"; //todo set group of team here 
+
             this._group.Add(teamToAdd);
             
             //TODO set pot and continent bools after insertion
