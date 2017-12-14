@@ -29,16 +29,38 @@ namespace RepoRepo
             const string user = "worldcup";
             const string pass = "password";
 
-            ConnectionString = String.Format(
+            ConnectionString = string.Format(
                 "Data Source = (DESCRIPTION = (ADDRESS = (PROTOCOL = TCP)(HOST = {0})(PORT = {1}))(CONNECT_DATA =(SERVER = DEDICATED)(SERVICE_NAME = XE)));User Id={2};password={3};",
                 host, port, user, pass);
 
             _myConnection.ConnectionString = ConnectionString;
         }
 
-        public static void AddMatchToDataBase()
+        public void AddScheduleToDataBase(List<Match> matchesList)
         {
-            
+            foreach (var match in matchesList)
+            {
+                AddMatchToDataBase(match);
+            }
+        }
+
+        public void AddMatchToDataBase(Match matchToAdd)
+        {
+            string query = string.Format(
+                    "INSERT INTO matches VALUES(matches_seq.nextval, '{0}', '{1}', 0, 0, TO_DATE('{2}/{3}/{4}','dd-mm-yyyy'))",
+                    matchToAdd.Team1.Name,
+                    matchToAdd.Team2.Name, 
+                    matchToAdd.MatchDate.Day, matchToAdd.MatchDate.Month, matchToAdd.MatchDate.Year
+                );
+            _myConnection.Open();
+            OracleCommand cmd = new OracleCommand(query);
+            cmd.CommandType = CommandType.Text;
+            cmd.Connection = _myConnection;
+            int rowsAffected = cmd.ExecuteNonQuery();
+            _myConnection.Close();
+
+            if (rowsAffected != 1)
+                throw new Exception("DataBaseConnection::AddMatchInDataBase() -> rowsAffected != 1");
         }
 
         public void EstablishConnection()
@@ -47,12 +69,25 @@ namespace RepoRepo
 
         }
 
-        public void MigrateToDataBase(Group groupA, Group groupB, Group groupC, Group groupD,
-                                      Group groupE, Group groupF, Group groupG, Group groupH )
+        public void MigrateGroupsToDataBase(Group groupA, Group groupB, Group groupC, Group groupD,
+                                            Group groupE, Group groupF, Group groupG, Group groupH)
         {
-            //transfer all foreach redundant logic from engine here and call this once
-            Team team = new Team(null, null,null, null);
-            UpdateTeamInDataBase(team);
+            foreach (var team in groupA.GetGroupTeams())
+                this.UpdateTeamInDataBase(team);
+            foreach (var team in groupB.GetGroupTeams())
+                this.UpdateTeamInDataBase(team);
+            foreach (var team in groupC.GetGroupTeams())
+                this.UpdateTeamInDataBase(team);
+            foreach (var team in groupD.GetGroupTeams())
+                this.UpdateTeamInDataBase(team);
+            foreach (var team in groupE.GetGroupTeams())
+                this.UpdateTeamInDataBase(team);
+            foreach (var team in groupF.GetGroupTeams())
+                this.UpdateTeamInDataBase(team);
+            foreach (var team in groupG.GetGroupTeams())
+                this.UpdateTeamInDataBase(team);
+            foreach (var team in groupH.GetGroupTeams())
+                this.UpdateTeamInDataBase(team);
         }
 
         public void UpdateTeamInDataBase(Team newTeam)

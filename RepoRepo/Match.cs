@@ -5,10 +5,11 @@ namespace RepoRepo
 {
     public class Match
     {
-        private DateTime MatchDate { get; set; } //<- check if datetime or timespan or right type ?
-        private Team Team1 { get; set; }
-        private Team Team2 { get; set; }
-        private Label _dateLabel;
+        public DateTime MatchDate { get; } //<- check if datetime or timespan or right type ?
+        public Team Team1 { get; }
+        public Team Team2 { get; }
+
+        private Label _dateLabel = new Label();
 
         /*
         private int score1;
@@ -18,7 +19,9 @@ namespace RepoRepo
 
         public Match(Team team1, Team team2, DateTime matchDate)
         {
-                
+            Team1 = team1; Team2 = team2;
+            MatchDate = matchDate;
+            _dateLabel.Text = matchDate.ToLongDateString();
         }
 
 

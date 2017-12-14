@@ -69,6 +69,58 @@ namespace RepoRepo
 
         }
 
+        
+        
+
+        public static void ValidateClicked()
+        {
+            UpdateGroupForEachTeamInDataBase(); //DONE
+            CalculateSchedules();               //Being implemented
+
+            UpdateSchedulesInDataBase();        //NOT YET
+        }
+
+        private static void CalculateSchedules()
+        {
+            _groupA.PlanMatches(); _groupB.PlanMatches();
+            _groupC.PlanMatches(); _groupD.PlanMatches();
+            _groupE.PlanMatches(); _groupF.PlanMatches();
+            _groupG.PlanMatches(); _groupH.PlanMatches();
+        }
+
+        private static void UpdateSchedulesInDataBase()
+        {
+            _connector.AddScheduleToDataBase(_groupA.GetSchedule().GetMatches());
+            _connector.AddScheduleToDataBase(_groupB.GetSchedule().GetMatches());
+            _connector.AddScheduleToDataBase(_groupC.GetSchedule().GetMatches());
+            _connector.AddScheduleToDataBase(_groupD.GetSchedule().GetMatches());
+            _connector.AddScheduleToDataBase(_groupE.GetSchedule().GetMatches());
+            _connector.AddScheduleToDataBase(_groupF.GetSchedule().GetMatches());
+            _connector.AddScheduleToDataBase(_groupG.GetSchedule().GetMatches());
+            _connector.AddScheduleToDataBase(_groupH.GetSchedule().GetMatches());
+        }
+
+        public void ShowScheduleForGroup(Group group)
+        {
+            //throw new NotImplementedException();
+        }
+
+
+        //BUG to be transfered as public static method to DataBaseConnection ??
+        private static void UpdateGroupForEachTeamInDataBase()
+        {
+            _connector.MigrateGroupsToDataBase(_groupA, _groupB, _groupC, _groupD,
+                                               _groupE, _groupF, _groupG, _groupH);
+        }
+
+        private static void CheckIfDrawn()
+        {
+            if (_totalTeamsCount == NUMBEROFTEAMS)
+            {
+                _validationButton.Enabled = true;
+            }
+        }
+
         public static void ProcessMovement(Team team, Point whereLeft)
         {
             if (PositionToGroupChar(whereLeft) == 'x') { team.MoveTeam(team.ReturnWhereLeftPoint()); return; }
@@ -97,45 +149,6 @@ namespace RepoRepo
             //else give it _initPoint
 
             //call return where landed
-        }
-
-        public static void ValidateClicked()
-        {
-            UpdateGroupForEachTeamInDataBase();
-        }
-
-        //BUG to be transfered as static method to DataBaseConnection
-        private static void UpdateGroupForEachTeamInDataBase()
-        {
-            foreach (var team in _groupA.GetGroupTeams())
-                _connector.UpdateTeamInDataBase(team);
-            foreach (var team in _groupB.GetGroupTeams())
-                _connector.UpdateTeamInDataBase(team);
-            foreach (var team in _groupC.GetGroupTeams())
-                _connector.UpdateTeamInDataBase(team);
-            foreach (var team in _groupD.GetGroupTeams())
-                _connector.UpdateTeamInDataBase(team);
-            foreach (var team in _groupE.GetGroupTeams())
-                _connector.UpdateTeamInDataBase(team);
-            foreach (var team in _groupF.GetGroupTeams())
-                _connector.UpdateTeamInDataBase(team);
-            foreach (var team in _groupG.GetGroupTeams())
-                _connector.UpdateTeamInDataBase(team);
-            foreach (var team in _groupH.GetGroupTeams())
-                _connector.UpdateTeamInDataBase(team);
-        }
-
-        private static void ScheduleMatches()
-        {
-            
-        }
-
-        private static void CheckIfDrawn()
-        {
-            if (_totalTeamsCount == NUMBEROFTEAMS)
-            {
-                _validationButton.Enabled = true;
-            }
         }
 
         private static void RemoveTeamFromPot(Team team)
@@ -279,5 +292,7 @@ namespace RepoRepo
             }
         }
 
+
+        
     }
 }

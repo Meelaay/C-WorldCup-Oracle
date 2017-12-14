@@ -61,6 +61,7 @@
     <Compile Include="Form2.Designer.cs">
       <DependentUpon>Form2.cs</DependentUpon>
     </Compile>
+    <Compile Include="GlobalEngine.cs" />
     <Compile Include="Group.cs" />
     <Compile Include="Match.cs" />
     <Compile Include="Pot.cs" />

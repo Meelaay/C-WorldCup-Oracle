@@ -16,5 +16,25 @@ namespace RepoRepo
         {
             InitializeComponent();
         }
+
+        private void groupAToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            //GlobalEngine.engine32.ShowScheduleForGroup();
+        }
+
+        private void groupBToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void groupCToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void groupDToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

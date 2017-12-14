@@ -8,6 +8,8 @@ namespace RepoRepo
     {
         private List<Team> _group = new List<Team>();
 
+        private Schedule _schedule = new Schedule();
+
         //todo group should it know about pots logic ? or just stuff inside itself ? 
         //todo is it the engine property to manage right team from right pot to the right group ? so should it have the logic ?
 
@@ -23,7 +25,12 @@ namespace RepoRepo
         public Point TEAM4POSITION;
         #endregion
 
-        public List<Team> GetGroupTeams()
+        public Schedule GetSchedule()
+        {
+            return _schedule;
+        }
+
+        public List<Team> GetGroupTeams() //=> _group
         {
             return _group;
         }
@@ -57,6 +64,11 @@ namespace RepoRepo
 
         }
 
+        public void PlanMatches()
+        {
+            _schedule.SetUpScheduleForGroup(this);
+        }
+
         private void FillBordersOfGroup(Point p1, Point p3)
         {
             //todo and hide : automates filling of group borders
@@ -83,47 +95,7 @@ namespace RepoRepo
         }
 
 
-        public bool AddTeamToGroup(Team teamToAdd)
-        {
-            //logic to add or not the team
-            if (teamToAdd.IsAfrica)
-            {
-                if (IsAfrica)
-                {
-                    return false;
-                }
-                _group.Add(teamToAdd);
-            }
-            else if (teamToAdd.IsAsia)
-            {
-                if (IsAsia)
-                {
-                    return false;
-                }
-                _group.Add(teamToAdd);
-            }
-            else if (teamToAdd.IsEurope)
-            {
-                _group.Add(teamToAdd);
-            }
-            else if (teamToAdd.IsNorthAmerica)
-            {
-                if (IsNorthAmerica)
-                {
-                    return false;
-                }
-                _group.Add(teamToAdd);
-            }
-            else if (teamToAdd.IsSouthAmerica)
-            {
-                if (IsSouthAmerica)
-                {
-                    return false;
-                }
-                _group.Add(teamToAdd);
-            }
-            return false;
-        }
+        
 
         //todo put GetPosition as a static func in ENGINE
 
@@ -284,6 +256,7 @@ namespace RepoRepo
             teamToAdd.Group = groupChar.ToString();
 
         }
+
         
     }
 }

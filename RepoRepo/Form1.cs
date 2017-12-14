@@ -12,8 +12,6 @@ namespace RepoRepo
 {
     public partial class Form1 : Form
     {
-        private Engine32Teams engine32;
-
         public Form1()
         {
             InitializeComponent();
@@ -26,7 +24,7 @@ namespace RepoRepo
              */
             buttonValidate.Enabled = false;
 
-            engine32 = new Engine32Teams(this, buttonValidate);
+            GlobalEngine.engine32 = new Engine32Teams(this, buttonValidate);
                         
             this.Size = new Size((int) (Engine32Teams.MENUBOX.Width * 1.25) + 200,
                                  (int) (Engine32Teams.MENUBOX.Height * 1.18)
@@ -36,19 +34,19 @@ namespace RepoRepo
 
             this.Controls.Add(Engine32Teams.MENUBOX);
 
-            foreach (var picture in engine32.GetPotPictureBoxes(Engine32Teams.POT1))
+            foreach (var picture in GlobalEngine.engine32.GetPotPictureBoxes(Engine32Teams.POT1))
             {
                 this.Controls.Add(picture);
             }
-            foreach (var picture in engine32.GetPotPictureBoxes(Engine32Teams.POT2))
+            foreach (var picture in GlobalEngine.engine32.GetPotPictureBoxes(Engine32Teams.POT2))
             {
                 this.Controls.Add(picture);
             }
-            foreach (var picture in engine32.GetPotPictureBoxes(Engine32Teams.POT3))
+            foreach (var picture in GlobalEngine.engine32.GetPotPictureBoxes(Engine32Teams.POT3))
             {
                 this.Controls.Add(picture);
             }
-            foreach (var picture in engine32.GetPotPictureBoxes(Engine32Teams.POT4))
+            foreach (var picture in GlobalEngine.engine32.GetPotPictureBoxes(Engine32Teams.POT4))
             {
                 this.Controls.Add(picture);
             }
@@ -88,6 +86,8 @@ namespace RepoRepo
         private void buttonValidate_Click(object sender, EventArgs e)
         {
             Engine32Teams.ValidateClicked();
+            
+            //pop the new form2 with groupA as main one then fix the other stuff of visibility and clicking
         }
     }
 }
