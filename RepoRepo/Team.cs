@@ -4,6 +4,11 @@ using System.Windows.Forms;
 
 namespace RepoRepo
 {
+    public class BasicTeam
+    {
+        
+    }
+
     public class Team
     {
         public PictureBox Flag { get; set; }

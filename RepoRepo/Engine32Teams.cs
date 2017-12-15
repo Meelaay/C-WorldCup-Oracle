@@ -21,7 +21,7 @@ namespace RepoRepo
         private static readonly DataBaseConnection _connector = new DataBaseConnection();
         private const int NUMBEROFTEAMS = 32;
         private static List<Point> _initialPositionsList = new List<Point>(NUMBEROFTEAMS);
-        private Form _form;
+        private static Form _form2;
         private static int _totalTeamsCount = 0;
         
         public static PictureBox MENUBOX { get; set; }
@@ -50,7 +50,9 @@ namespace RepoRepo
             //238, 125 is position of team 1 in group A
             FillInitialPositions();
             SetMenuBox();
-            _form = form;                   //BUG throw away at the end if not needed
+            Schedule.FillPositions();
+
+            _form2 = form;                   //BUG throw away at the end if not needed
             _validationButton = validationButton;
             _groupA = new Group(new Point(220, 80), new Point(420, 320), new Point(238, 125));
             _groupB = new Group(new Point(420, 80), new Point(620, 320), new Point(458, 125));
@@ -74,11 +76,57 @@ namespace RepoRepo
 
         public static void ValidateClicked()
         {
-            UpdateGroupForEachTeamInDataBase(); //DONE
-            CalculateSchedules();               //Being implemented
+            UpdateGroupForEachTeamInDataBase(); 
+            CalculateSchedules();               
+            UpdateSchedulesInDataBase();
+            _groupA = _groupA;
+            _groupB = _groupB;
+            _groupC = _groupC;
+            _groupD = _groupD;
+            //pop the second form here
+            _validationButton.Enabled = false;
+            InitializeFormOfSchedules();
+            _form2.Show();
 
-            UpdateSchedulesInDataBase();        //NOT YET
         }
+
+        public static PictureBox DeepCopy(PictureBox pb)
+        {
+            return new PictureBox { Name = pb.Name, Image = pb.Image, Size = pb.Size, SizeMode = pb.SizeMode };
+        }
+
+        private static void InitializeFormOfSchedules()
+        {
+            _groupA.GetSchedule().SetPositions();
+
+            FillControlsOfForm2(_groupA.GetSchedule().GetMatches());
+            /*
+            FillControlsOfForm2(_groupB.GetSchedule().GetMatches());
+            FillControlsOfForm2(_groupC.GetSchedule().GetMatches());
+            FillControlsOfForm2(_groupD.GetSchedule().GetMatches());
+            FillControlsOfForm2(_groupE.GetSchedule().GetMatches());
+            FillControlsOfForm2(_groupF.GetSchedule().GetMatches());
+            FillControlsOfForm2(_groupG.GetSchedule().GetMatches());
+            FillControlsOfForm2(_groupH.GetSchedule().GetMatches());
+            */
+        }
+
+        private static void FillControlsOfForm2(List<Match> listOfMatches)
+        {
+            foreach (var match in listOfMatches)
+            {
+                _form2.Controls.Add(DeepCopy(match.Team1.Flag));
+                _form2.Controls.Add(DeepCopy(match.Team2.Flag));
+                _form2.Controls.Add(match.DateLabel);
+            }
+        }
+        public void ShowScheduleForGroup(Group group)
+        {
+            InitializeFormOfSchedules();
+
+            _form2.Refresh();
+        }
+
 
         private static void CalculateSchedules()
         {
@@ -100,10 +148,7 @@ namespace RepoRepo
             _connector.AddScheduleToDataBase(_groupH.GetSchedule().GetMatches());
         }
 
-        public void ShowScheduleForGroup(Group group)
-        {
-            //throw new NotImplementedException();
-        }
+        
 
 
         //BUG to be transfered as public static method to DataBaseConnection ??
@@ -115,7 +160,7 @@ namespace RepoRepo
 
         private static void CheckIfDrawn()
         {
-            if (_totalTeamsCount == NUMBEROFTEAMS)
+            if (_totalTeamsCount == 1)//NUMBEROFTEAMS
             {
                 _validationButton.Enabled = true;
             }
@@ -170,7 +215,7 @@ namespace RepoRepo
             }
         }
 
-        private static Group CharToGroup(char groupChar)
+        public static Group CharToGroup(char groupChar)
         {
             switch (groupChar)
             {

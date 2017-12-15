@@ -12,6 +12,7 @@ namespace RepoRepo
 {
     public partial class Form1 : Form
     {
+        private Form2 _form2 = new Form2();
         public Form1()
         {
             InitializeComponent();
@@ -24,7 +25,7 @@ namespace RepoRepo
              */
             buttonValidate.Enabled = false;
 
-            GlobalEngine.engine32 = new Engine32Teams(this, buttonValidate);
+            GlobalEngine.engine32 = new Engine32Teams(_form2, buttonValidate);
                         
             this.Size = new Size((int) (Engine32Teams.MENUBOX.Width * 1.25) + 200,
                                  (int) (Engine32Teams.MENUBOX.Height * 1.18)

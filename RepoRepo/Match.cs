@@ -9,7 +9,7 @@ namespace RepoRepo
         public Team Team1 { get; }
         public Team Team2 { get; }
 
-        private Label _dateLabel = new Label();
+        public Label DateLabel = new Label();
 
         /*
         private int score1;
@@ -21,7 +21,7 @@ namespace RepoRepo
         {
             Team1 = team1; Team2 = team2;
             MatchDate = matchDate;
-            _dateLabel.Text = matchDate.ToLongDateString();
+            DateLabel.Text = matchDate.ToLongDateString();
         }
 
 
