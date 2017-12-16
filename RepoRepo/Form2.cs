@@ -19,23 +19,22 @@ namespace RepoRepo
 
         private void groupAToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            
             GlobalEngine.engine32.ShowScheduleForGroup(Engine32Teams.CharToGroup('a'));
         }
 
         private void groupBToolStripMenuItem_Click(object sender, EventArgs e)
         {
-
+            GlobalEngine.engine32.ShowScheduleForGroup(Engine32Teams.CharToGroup('b'));
         }
 
         private void groupCToolStripMenuItem_Click(object sender, EventArgs e)
         {
-
+            GlobalEngine.engine32.ShowScheduleForGroup(Engine32Teams.CharToGroup('c'));
         }
 
         private void groupDToolStripMenuItem_Click(object sender, EventArgs e)
         {
-
+            GlobalEngine.engine32.ShowScheduleForGroup(Engine32Teams.CharToGroup('d'));
         }
     }
 }

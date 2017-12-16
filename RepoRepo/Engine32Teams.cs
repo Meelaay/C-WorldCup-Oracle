@@ -50,7 +50,6 @@ namespace RepoRepo
             //238, 125 is position of team 1 in group A
             FillInitialPositions();
             SetMenuBox();
-            Schedule.FillPositions();
 
             _form2 = form;                   //BUG throw away at the end if not needed
             _validationButton = validationButton;
@@ -94,9 +93,9 @@ namespace RepoRepo
 
         private static void InitializeFormOfSchedules()
         {
-            _groupA.GetSchedule().SetPositions();
+            Schedule.FillPositions();
 
-            FillControlsOfForm2(_groupA.GetSchedule().GetMatches());
+            
             /*
             FillControlsOfForm2(_groupB.GetSchedule().GetMatches());
             FillControlsOfForm2(_groupC.GetSchedule().GetMatches());
@@ -118,9 +117,33 @@ namespace RepoRepo
             }
         }
 
+        private static void RemoveControlsOfForm2()
+        {
+            int j = _form2.Controls.Count;
+
+            for (int i = 0; i < j; i++)
+            {
+                Type typeOfControl = _form2.Controls[i].GetType();
+
+                if (typeOfControl == typeof(PictureBox) || typeOfControl == typeof(Label))
+                {
+                    var a = _form2.Controls[i];
+                    Convert.ChangeType(a, typeOfControl);
+                    _form2.Controls.Remove(a);
+                    j = _form2.Controls.Count;
+                    i--;
+                }
+
+               
+                
+            }
+        }
+
         public void ShowScheduleForGroup(Group group)
         {
-            InitializeFormOfSchedules();
+            group.GetSchedule().SetPositions();
+            RemoveControlsOfForm2();
+            FillControlsOfForm2(group.GetSchedule().GetMatches());
 
             _form2.Refresh();
         }

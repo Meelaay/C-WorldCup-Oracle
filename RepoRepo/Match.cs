@@ -29,7 +29,6 @@ namespace RepoRepo
         public Match(BasicTeam team1, BasicTeam team2, DateTime matchDate)
         {
             Team1 = BasicTeam.DeepCopyTeam(team1);
-
             Team2 = BasicTeam.DeepCopyTeam(team2);
 
             MatchDate = matchDate;
