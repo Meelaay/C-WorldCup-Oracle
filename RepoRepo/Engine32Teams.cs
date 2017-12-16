@@ -90,10 +90,7 @@ namespace RepoRepo
 
         }
 
-        public static PictureBox DeepCopy(PictureBox pb)
-        {
-            return new PictureBox { Name = pb.Name, Image = pb.Image, Size = pb.Size, SizeMode = pb.SizeMode };
-        }
+        
 
         private static void InitializeFormOfSchedules()
         {
@@ -115,11 +112,12 @@ namespace RepoRepo
         {
             foreach (var match in listOfMatches)
             {
-                _form2.Controls.Add(DeepCopy(match.Team1.Flag));
-                _form2.Controls.Add(DeepCopy(match.Team2.Flag));
+                _form2.Controls.Add(match.Team1.Flag);
+                _form2.Controls.Add(match.Team2.Flag);
                 _form2.Controls.Add(match.DateLabel);
             }
         }
+
         public void ShowScheduleForGroup(Group group)
         {
             InitializeFormOfSchedules();

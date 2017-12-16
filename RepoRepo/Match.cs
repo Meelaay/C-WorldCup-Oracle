@@ -5,9 +5,12 @@ namespace RepoRepo
 {
     public class Match
     {
+
+        //private int _matchID; -> could be used later to identify matches or maybe use just names
+
         public DateTime MatchDate { get; } //<- check if datetime or timespan or right type ?
-        public Team Team1 { get; }
-        public Team Team2 { get; }
+        public BasicTeam Team1 { get; }
+        public BasicTeam Team2 { get; }
 
         public Label DateLabel = new Label();
 
@@ -16,14 +19,22 @@ namespace RepoRepo
         private int score2;
         */
 
-
-        public Match(Team team1, Team team2, DateTime matchDate)
+        public static PictureBox DeepCopy(PictureBox pb)
         {
-            Team1 = team1; Team2 = team2;
-            MatchDate = matchDate;
-            DateLabel.Text = matchDate.ToLongDateString();
+            return new PictureBox { Name = pb.Name, Image = pb.Image, Size = pb.Size, SizeMode = pb.SizeMode };
         }
 
+        
 
+        public Match(BasicTeam team1, BasicTeam team2, DateTime matchDate)
+        {
+            Team1 = BasicTeam.DeepCopyTeam(team1);
+
+            Team2 = BasicTeam.DeepCopyTeam(team2);
+
+            MatchDate = matchDate;
+            DateLabel.AutoSize = true;
+            DateLabel.Text = matchDate.ToLongDateString();
+        }
     }
 }

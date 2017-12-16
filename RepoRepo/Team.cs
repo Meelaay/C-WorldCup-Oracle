@@ -4,22 +4,13 @@ using System.Windows.Forms;
 
 namespace RepoRepo
 {
-    public class BasicTeam
+    
+    public class Team : BasicTeam
     {
-        
-    }
 
-    public class Team
-    {
-        public PictureBox Flag { get; set; }
-        public string Name { get; }
-        public string Continent { get; }
-        public int Pot { get; set; }
-
-        public string Group { get; set; }
         //todo add bools that represent group and make function that sets them to call in ctor 
         //todo same for bool pots
-        
+        public int Pot { get; set; }
 
         private Point _mouseDownLocation = new Point(0,0);
         private Point _initialPoint = new Point(0, 0);
@@ -44,9 +35,10 @@ namespace RepoRepo
         private MouseEventHandler b ;
         private MouseEventHandler c ;
 
-        
+
 
         public Team(string path, string name, string continent, string pot)
+            : base(null, name, continent, null)
         {
             IsAfrica = IsAsia = IsEurope = IsNorthAmerica = IsSouthAmerica = false;
             this.Continent = continent;

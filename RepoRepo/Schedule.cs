@@ -14,10 +14,7 @@ namespace RepoRepo
 
         private static List<Point> _labelPositions = new List<Point>(capacity: 6);//TODO fix this initialize it
 
-        public static PictureBox DeepCopy(PictureBox pb)
-        {
-            return new PictureBox { Name = pb.Name, Image = pb.Image, Size = pb.Size, SizeMode = pb.SizeMode };
-        }
+        
 
         public List<Match> GetMatches()
         {
@@ -31,14 +28,16 @@ namespace RepoRepo
 
         public void SetPositions()
         {
-            Match match;
-
             for (int i = 0; i < 6; i++)
             {
-                match = _matchesList[i];
-                match.Team1.Flag.Location = _team1Positions[i];
-                match.Team2.Flag.Location = _team2Positions[i];
-                match.DateLabel.Location = _labelPositions[i];
+                _matchesList[i].Team1.Flag.Left = _team1Positions[i].X;
+                _matchesList[i].Team1.Flag.Top = _team1Positions[i].Y;
+
+                _matchesList[i].Team2.Flag.Left = _team2Positions[i].X;
+                _matchesList[i].Team2.Flag.Top = _team2Positions[i].Y;
+
+                _matchesList[i].DateLabel.Left = _labelPositions[i].X;
+                _matchesList[i].DateLabel.Top = _labelPositions[i].Y;
             }
         }
 
@@ -60,28 +59,28 @@ namespace RepoRepo
             for (int i = 0; i < 6; i++)
             {
                 _team1Positions.Add(position);
-                position.Y += 15;
+                position.Y += 40;
             }
 
-            position.X += 100;
+            position.X += 500;
             position.Y = OFFSET_OF_FLAGS_FROM_TOP;
             
             //_team2Positions.Count
             for (int i = 0; i < 6; i++)
             {
                 _team2Positions.Add(position);
-                position.Y += 50;
+                position.Y += 40;
             }
             int x = (_team1Positions[0].X + _team2Positions[0].X) / 2;
             int y = (_team1Positions[0].Y + _team2Positions[0].Y) / 2;
 
-            Point midPoint = new Point(x, y+600);
+            Point midPoint = new Point(x, y+20);
 
             //_labelPositions.Count
             for (int j = 0; j < 6; j++)
             {
                 _labelPositions.Add(midPoint);
-                midPoint.Y += 50;
+                midPoint.Y += 40;
             }
             
         }
@@ -89,16 +88,16 @@ namespace RepoRepo
 
         public void SetUpScheduleForGroup(Group group)
         {
-            List<Team> teamsList = group.GetGroupTeams();
+            List<BasicTeam> teamsList = BasicTeam.DeepCopyTeamsList(group.GetGroupTeams());
 
-            _matchesList.Add(new Match(teamsList[0], teamsList[1], _day1));
-            _matchesList.Add(new Match(teamsList[0], teamsList[2], _day1));
+            _matchesList.Add(new Match((BasicTeam)teamsList[0], (BasicTeam)teamsList[1], _day1));
+            _matchesList.Add(new Match((BasicTeam)teamsList[0], (BasicTeam)teamsList[2], _day1));
 
-            _matchesList.Add(new Match(teamsList[0], teamsList[3], _day2));
-            _matchesList.Add(new Match(teamsList[1], teamsList[2], _day2));
+            _matchesList.Add(new Match((BasicTeam)teamsList[0], (BasicTeam)teamsList[3], _day2));
+            _matchesList.Add(new Match((BasicTeam)teamsList[1], (BasicTeam)teamsList[2], _day2));
 
-            _matchesList.Add(new Match(teamsList[1], teamsList[3], _day3));
-            _matchesList.Add(new Match(teamsList[2], teamsList[3], _day3));
+            _matchesList.Add(new Match((BasicTeam)teamsList[1], (BasicTeam)teamsList[3], _day3));
+            _matchesList.Add(new Match((BasicTeam)teamsList[2], (BasicTeam)teamsList[3], _day3));
         }
 
         

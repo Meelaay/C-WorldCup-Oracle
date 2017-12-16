@@ -102,7 +102,8 @@ namespace RepoRepo
         public bool ProcesssDroppedTeam(Team droppedTeam, char groupChar)
         {
             //todo method if you could SET BOOLS IN CTOR TO FALSE OR RIGHT THING FIX YOUR STUFF
-            
+            AddTeam(droppedTeam, groupChar);
+            return true;
             //todo make method that returns si appartient a la zone 
             if (!IsGroupComplete())
             {
