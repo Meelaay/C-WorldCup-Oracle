@@ -6,7 +6,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
-using static System.String;
+
 
 namespace RepoRepo
 {
@@ -313,7 +313,7 @@ namespace RepoRepo
         {
                                       //todo not * fix IT ** you can change it here if it requirements chage in future
             var teamsListOfPot = new List<Team>();
-            string query = Format("SELECT country, pot, continent FROM teams t WHERE t.pot = '{0}' ", pot);//pot is 1-2-3-4 not a-b-c-d
+            string query = String.Format("SELECT country, pot, continent FROM teams t WHERE t.pot = '{0}' ", pot);//pot is 1-2-3-4 not a-b-c-d
             DataTable dt = _connector.ExecuteQuery(query);
             int potInteger = Convert.ToInt32(pot);
             int i = 0;
