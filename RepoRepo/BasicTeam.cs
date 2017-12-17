@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Windows.Forms;
 
 namespace RepoRepo
@@ -10,6 +11,8 @@ namespace RepoRepo
         public string Name { get; set; }
         public string Continent { get; set; }
         public string Group { get; set; }
+
+        
 
         public BasicTeam(PictureBox flag, string name, string continent, string group)
         {
@@ -45,5 +48,19 @@ namespace RepoRepo
             return listToReturn;
         }
 
+        
+
+        
+
+        protected Point GetPosition(Control c)
+        {
+            return c.FindForm().PointToClient(c.Parent.PointToScreen(c.Location));
+        }
+
+        public void MoveTeam(Point destination)
+        {
+            Flag.Left = destination.X;
+            Flag.Top = destination.Y;
+        }
     }
 }

@@ -17,7 +17,6 @@ namespace RepoRepo
         private Point _whereLeftPoint = new Point(0, 0);
 
         //todo add pot of every team? or maybe a bool that represent the continent
-
         #region Continent Bools
         public bool IsAfrica { get; set; }
         public bool IsAsia { get; set; }
@@ -26,11 +25,15 @@ namespace RepoRepo
         public bool IsSouthAmerica { get; set; }
         #endregion
 
+
         private static readonly Image _pot1Image = Image.FromFile(@"..\..\Sprites\pots\pot1.png");
         private static readonly Image _pot2Image = Image.FromFile(@"..\..\Sprites\pots\pot2.png");
         private static readonly Image _pot3Image = Image.FromFile(@"..\..\Sprites\pots\pot3.png");
         private static readonly Image _pot4Image = Image.FromFile(@"..\..\Sprites\pots\pot4.png");
+
         private Image _initialImage;
+
+
         private MouseEventHandler a ;
         private MouseEventHandler b ;
         private MouseEventHandler c ;
@@ -41,10 +44,8 @@ namespace RepoRepo
             : base(null, name, continent, null)
         {
             IsAfrica = IsAsia = IsEurope = IsNorthAmerica = IsSouthAmerica = false;
-            this.Continent = continent;
             this.Pot = Convert.ToInt32(pot);
-            this.InitContinentBools(continent);
-            this.Name = name;
+            InitContinentBools(continent);
             _initialImage = Image.FromFile(path);
             this.Flag = new PictureBox {Image = Image.FromFile(path)};
             this.Flag.Size = new Size((int)(Flag.Image.Width / 1.25), (int)(Flag.Image.Height / 1.25));
@@ -60,6 +61,28 @@ namespace RepoRepo
             this.Flag.MouseUp += c;
 
             HideTeam(); //<-- BUG probably not right spot
+        }
+        private void InitContinentBools(string continent)
+        {
+            switch (continent)
+            {
+                case "africa":
+                    this.IsAfrica = true;
+                    return;
+                case "asia":
+                    this.IsAsia = true;
+                    return;
+                case "europe":
+                    this.IsEurope = true;
+                    return;
+                case "northamerica":
+                    this.IsNorthAmerica = true;
+                    return;
+                case "southamerica":
+                    this.IsSouthAmerica = true;
+                    return;
+            }
+            throw new Exception("InitContinentBools() -> invalid continent check passed arg.");
         }
 
         public void HideTeam()
@@ -90,28 +113,7 @@ namespace RepoRepo
 
 
 
-        private void InitContinentBools(string continent)
-        {
-            switch (continent)
-            {
-                case "africa":
-                    this.IsAfrica = true;
-                    return;
-                case "asia":
-                    this.IsAsia = true;
-                    return;
-                case "europe":
-                    this.IsEurope = true;
-                    return;
-                case "northamerica":
-                    this.IsNorthAmerica = true;
-                    return;
-                case "southamerica":
-                    this.IsSouthAmerica = true;
-                    return;
-            }
-            throw new Exception("InitContinentBools() -> invalid continent check passed arg.");
-        }
+        
 
         
 
@@ -122,10 +124,7 @@ namespace RepoRepo
         }
 
         //As static function in engine
-        private Point GetPosition(Control c)
-        {
-            return c.FindForm().PointToClient(c.Parent.PointToScreen(c.Location));
-        }
+        
 
 
         private void flag_mouseDown(object sender, MouseEventArgs e)
@@ -157,28 +156,15 @@ namespace RepoRepo
             //TODO on release freeze team in position
         }
 
-        public void MoveTeam(Point destination)
-        {
-            Flag.Left = destination.X;
-            Flag.Top = destination.Y;
-        }
+        
 
         public Point ReturnWhereLeftPoint()
         {
             return _initialPoint;
         }
 
-        //events:
         
-        void pictureBox_Click(object sender, EventArgs e)
-        {
-            string test = Continent;
-
-        }
-        public void Show()
-        {
-            Flag.Visible = true;
-        }
+        
         
         //todo create a ctor overload for future use 
         

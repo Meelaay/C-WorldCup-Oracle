@@ -27,6 +27,7 @@ namespace RepoRepo
         public static PictureBox MENUBOX { get; set; }
 
         #region Groups (A->H)
+            private static List<Group> _groupsList = new List<Group>();
             private static Group _groupA;
             private static Group _groupB;
             private static Group _groupC;
