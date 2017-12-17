@@ -15,7 +15,7 @@ namespace RepoRepo
     public class DataBaseConnection
     {
         public string ConnectionString { get; }
-        public OracleConnection _myConnection = new OracleConnection();
+        public static OracleConnection _myConnection = new OracleConnection();
 
 
 
@@ -30,8 +30,8 @@ namespace RepoRepo
             const string pass = "password";
 
             ConnectionString = string.Format(
-                "Data Source = (DESCRIPTION = (ADDRESS = (PROTOCOL = TCP)(HOST = {0})(PORT = {1}))(CONNECT_DATA =(SERVER = DEDICATED)(SERVICE_NAME = XE)));User Id={2};password={3};",
-                host, port, user, pass);
+                "Data Source = (DESCRIPTION = (ADDRESS = (PROTOCOL = TCP)(HOST = {0})(PORT = {1}))(CONNECT_DATA =(SERVER = DEDICATED)(SERVICE_NAME = {2})));User Id={3};password={4};",
+                host, port, sid, user, pass);
 
             _myConnection.ConnectionString = ConnectionString;
         }
@@ -39,9 +39,7 @@ namespace RepoRepo
         public void AddScheduleToDataBase(List<Match> matchesList)
         {
             foreach (var match in matchesList)
-            {
                 AddMatchToDataBase(match);
-            }
         }
 
         public void AddMatchToDataBase(Match matchToAdd)
@@ -69,28 +67,14 @@ namespace RepoRepo
 
         }
 
-        public void MigrateGroupsToDataBase(Group groupA, Group groupB, Group groupC, Group groupD,
-                                            Group groupE, Group groupF, Group groupG, Group groupH)
+        public static void UpdateGroupForEachTeamInDataBase(List<Group> groupsList)
         {
-            foreach (var team in groupA.GetGroupTeams())
-                this.UpdateTeamInDataBase(team);
-            foreach (var team in groupB.GetGroupTeams())
-                this.UpdateTeamInDataBase(team);
-            foreach (var team in groupC.GetGroupTeams())
-                this.UpdateTeamInDataBase(team);
-            foreach (var team in groupD.GetGroupTeams())
-                this.UpdateTeamInDataBase(team);
-            foreach (var team in groupE.GetGroupTeams())
-                this.UpdateTeamInDataBase(team);
-            foreach (var team in groupF.GetGroupTeams())
-                this.UpdateTeamInDataBase(team);
-            foreach (var team in groupG.GetGroupTeams())
-                this.UpdateTeamInDataBase(team);
-            foreach (var team in groupH.GetGroupTeams())
-                this.UpdateTeamInDataBase(team);
+            foreach (var group in groupsList)
+                foreach (var team in group.GetGroupTeams())
+                    UpdateTeamInDataBase(team);
         }
 
-        public void UpdateTeamInDataBase(Team newTeam)
+        public static void UpdateTeamInDataBase(Team newTeam)
         {
             string query = string.Format("UPDATE teams SET groupT = '{0}' WHERE country = '{1}'",
                                           newTeam.Group, newTeam.Name);
@@ -99,15 +83,15 @@ namespace RepoRepo
             cmd.CommandType = CommandType.Text;
             cmd.Connection = _myConnection;
             int rowsAffected = cmd.ExecuteNonQuery();
+
             if (rowsAffected != 1)
-            {
                 throw new Exception("DataBaseConnection::UpdateTeamInDataBase() -> rowsAffected != 1");
-            }
+
             _myConnection.Close();
         }
 
 
-        internal DataTable ExecuteQuery(string query)
+        private static DataTable ExecuteQuery(string query)
         {
             _myConnection.Open();
             DataTable dt = new DataTable();
@@ -137,34 +121,36 @@ namespace RepoRepo
 
             return team;
         }
-
-        /* initial ExecuteQuery() with test
-        private DataTable ExecuteQuery(string query)
+        public static List<Team> FillPotFromDataBase(int pot, List<Point> initialPositionsList)
         {
-            _myConnection.Open();
-            DataTable dt = new DataTable();
-            OracleCommand cmd = new OracleCommand(query);
-            cmd.CommandType = CommandType.Text;
-            cmd.Connection = _myConnection;
-            using (OracleDataAdapter dataAdapter = new OracleDataAdapter())
-            {
-                dataAdapter.SelectCommand = cmd;
-                dataAdapter.Fill(dt);
-            }
-            _myConnection.Close();
-            string test = "";
+            //todo not * fix IT ** you can change it here if it requirements chage in future
+            var teamsListOfPot = new List<Team>();
+            string query = String.Format("SELECT country, pot, continent FROM teams t WHERE t.pot = '{0}' ", pot);//pot is 1-2-3-4 not a-b-c-d
+            DataTable dt = ExecuteQuery(query);
 
-            foreach ( DataRow row in dt.Rows)
+            int i = -1;
+
+            if      (pot == 1) i = 0;
+            else if (pot == 2) i = 8;
+            else if (pot == 3) i = 16;
+            else if (pot == 4) i = 24;
+
+            if (i != 0 && i != 8 && i != 16 && i != 24)
+                throw new Exception("DataBaseConnection::FillPotFromDataBase() -> Unvalid pot.");
+
+            foreach (DataRow row in dt.Rows)
             {
-                test = row["NAME"].ToString();
+                var team = RowToTeam(row);
+                team.SetFlagPosition(initialPositionsList[i++]);
+                teamsListOfPot.Add(team);
             }
-            return dt;
+
+            if (teamsListOfPot.Count == 0)
+                throw new NullReferenceException("DataBaseConnection::FillPotFromDataBase() -> teamsListOfPot() is empty.");
+
+            return teamsListOfPot;
+
         }
-        */
-
-
-
-
 
     }
 }

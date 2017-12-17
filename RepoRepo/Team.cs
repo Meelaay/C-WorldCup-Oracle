@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
 
@@ -25,18 +26,19 @@ namespace RepoRepo
         public bool IsSouthAmerica { get; set; }
         #endregion
 
-
-        private static readonly Image _pot1Image = Image.FromFile(@"..\..\Sprites\pots\pot1.png");
-        private static readonly Image _pot2Image = Image.FromFile(@"..\..\Sprites\pots\pot2.png");
-        private static readonly Image _pot3Image = Image.FromFile(@"..\..\Sprites\pots\pot3.png");
-        private static readonly Image _pot4Image = Image.FromFile(@"..\..\Sprites\pots\pot4.png");
+        private static readonly List<Image> _potImages = new List<Image>
+        {
+            Image.FromFile(@"..\..\Sprites\pots\pot1.png"),
+            Image.FromFile(@"..\..\Sprites\pots\pot2.png"),
+            Image.FromFile(@"..\..\Sprites\pots\pot3.png"),
+            Image.FromFile(@"..\..\Sprites\pots\pot4.png")
+        };
 
         private Image _initialImage;
 
-
-        private MouseEventHandler a ;
-        private MouseEventHandler b ;
-        private MouseEventHandler c ;
+        private List<MouseEventHandler> _mouseEventHandlers = new List<MouseEventHandler>(capacity:3);
+        // 0 -> mouseDown, 1 -> mouseMove, 2 -> mouseUp
+        
 
 
 
@@ -52,13 +54,13 @@ namespace RepoRepo
             this.Flag.SizeMode = PictureBoxSizeMode.StretchImage;
 
             //todo adding events to every team (picbox of a team) add here events for drag and drop
-            a = new MouseEventHandler(flag_mouseDown);
-            b = new MouseEventHandler(flag_mouseMove);
-            c = new MouseEventHandler(flag_mouseUp);
+            this._mouseEventHandlers.Add(flag_mouseDown);
+            this._mouseEventHandlers.Add(flag_mouseMove);
+            this._mouseEventHandlers.Add(flag_mouseUp);
 
-            this.Flag.MouseDown += a;
-            this.Flag.MouseMove += b;
-            this.Flag.MouseUp += c;
+            this.Flag.MouseDown += _mouseEventHandlers[0];
+            this.Flag.MouseMove += _mouseEventHandlers[1];
+            this.Flag.MouseUp += _mouseEventHandlers[2];
 
             HideTeam(); //<-- BUG probably not right spot
         }
@@ -90,10 +92,10 @@ namespace RepoRepo
 
             switch (Pot)
             {
-                case 1: Flag.Image = _pot1Image; return;
-                case 2: Flag.Image = _pot2Image; return;
-                case 3: Flag.Image = _pot3Image; return;
-                case 4: Flag.Image = _pot4Image; return;
+                case 1: Flag.Image = _potImages[0]; return;
+                case 2: Flag.Image = _potImages[1]; return;
+                case 3: Flag.Image = _potImages[2]; return;
+                case 4: Flag.Image = _potImages[3]; return;
             }
         }
 
@@ -106,9 +108,9 @@ namespace RepoRepo
         public void RemoveEvents()
         {
             //todo check for null or exception
-            Flag.MouseDown -= a;
-            Flag.MouseMove -= b;
-            Flag.MouseUp -= c;
+            Flag.MouseDown -= _mouseEventHandlers[0];
+            Flag.MouseMove -= _mouseEventHandlers[1];
+            Flag.MouseUp -= _mouseEventHandlers[2];
         }
 
 

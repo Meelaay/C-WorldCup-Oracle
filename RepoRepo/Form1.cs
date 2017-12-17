@@ -35,19 +35,19 @@ namespace RepoRepo
 
             this.Controls.Add(Engine32Teams.MENUBOX);
 
-            foreach (var picture in GlobalEngine.engine32.GetPotPictureBoxes(Engine32Teams.POT1))
+            foreach (var picture in GlobalEngine.engine32.GetPotPictureBoxes(Engine32Teams.POTNUMBERS[0]))
             {
                 this.Controls.Add(picture);
             }
-            foreach (var picture in GlobalEngine.engine32.GetPotPictureBoxes(Engine32Teams.POT2))
+            foreach (var picture in GlobalEngine.engine32.GetPotPictureBoxes(Engine32Teams.POTNUMBERS[1]))
             {
                 this.Controls.Add(picture);
             }
-            foreach (var picture in GlobalEngine.engine32.GetPotPictureBoxes(Engine32Teams.POT3))
+            foreach (var picture in GlobalEngine.engine32.GetPotPictureBoxes(Engine32Teams.POTNUMBERS[2]))
             {
                 this.Controls.Add(picture);
             }
-            foreach (var picture in GlobalEngine.engine32.GetPotPictureBoxes(Engine32Teams.POT4))
+            foreach (var picture in GlobalEngine.engine32.GetPotPictureBoxes(Engine32Teams.POTNUMBERS[3]))
             {
                 this.Controls.Add(picture);
             }
