@@ -6,6 +6,8 @@ namespace RepoRepo
 {
     public class Group
     {
+        private char _groupChar;
+
         private List<Team> _groupTeams = new List<Team>();
 
         private Schedule _schedule = new Schedule();
@@ -41,9 +43,9 @@ namespace RepoRepo
         public List<bool> ContainsPot = new List<bool> {false, false, false, false};
         
         
-        public Group(Point p1, Point p3, Point firstElement)
+        public Group(Point p1, Point p3, Point firstElement, char groupChar)
         {
-
+            _groupChar = groupChar;
             FillBordersOfGroup(p1, p3);
             FillTeamPositionsInGroup(firstElement);
 
@@ -90,7 +92,7 @@ namespace RepoRepo
 
         //todo put GetPosition as a static func in ENGINE
 
-        public bool ProcesssDroppedTeam(Team droppedTeam, char groupChar)
+        public bool ProcesssDroppedTeam(Team droppedTeam)
         {
             //todo method if you could SET BOOLS IN CTOR TO FALSE OR RIGHT THING FIX YOUR STUFF
             
@@ -103,7 +105,7 @@ namespace RepoRepo
                 {
                     if (IsValidForInsertionContinentWise(droppedTeam))
                     {
-                        AddTeam(droppedTeam, groupChar);
+                        AddTeam(droppedTeam);
                         return true;
                     }
                     return false;
@@ -175,22 +177,12 @@ namespace RepoRepo
 
             return this.TEAMPOSITIONS[team.Pot - 1];
             
-            /*
-            switch (team.Pot) //sub with count of list
-            {
-                case 1: return this.TEAMPOSITIONS[0];
-                case 2: return this.TEAMPOSITIONS[1];
-                case 3: return this.TEAMPOSITIONS[2];
-                case 4: return this.TEAMPOSITIONS[3];
-            }
-            */
-            
         }
 
         /// <summary>
         /// USE WITH CAUTION, ADD ONLY IF TEAM IS VALID FOR INSERTION OR YOU RISK LOOSING INTEGRITY OF GROUP
         /// </summary>
-        private void AddTeam(Team teamToAdd, char groupChar)
+        private void AddTeam(Team teamToAdd)
         {
             //think of before adding
             //add exception if ggroup is full and insertions are trying to happen
@@ -222,7 +214,7 @@ namespace RepoRepo
 
             this._groupTeams.Add(teamToAdd);
             teamToAdd.RemoveEvents();
-            teamToAdd.Group = groupChar.ToString();
+            teamToAdd.Group = _groupChar.ToString();
 
         }
 

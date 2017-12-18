@@ -7,10 +7,11 @@ namespace RepoRepo
 {
     public class Pot
     {
-        private List<Team> _potTeams;
+        public List<Team> _potTeams;
         private static readonly Random _randomizer = new Random();
 
         //todo think of what should each pot have and know about in terms of properties, should it return a specific team for the group to process?
+
 
         public Pot(List<Team> list)
         {

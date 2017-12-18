@@ -13,7 +13,7 @@ namespace RepoRepo
 
     public class Engine32Teams
     {
-
+        
         public static readonly List<int> POTNUMBERS = new List<int> { 1, 2, 3, 4 } ;
         private const int NUMBEROFTEAMS = 32;
         public static PictureBox MENUBOX { get; set; }
@@ -26,8 +26,8 @@ namespace RepoRepo
         
 
         #region Groups (A->H) and Pots (1->4)
-            private static List<Group> _groupsList = new List<Group>(capacity:8);
-            private static List<Pot> _potsList = new List<Pot>(capacity:4);
+            private static readonly List<Group> GroupsList = new List<Group>(capacity:8);
+            private static readonly List<Pot> PotsList = new List<Pot>(capacity:4);
         #endregion
 
 
@@ -40,24 +40,27 @@ namespace RepoRepo
             _form2 = form;                   //BUG throw away at the end if not needed
             _validationButton = validationButton;
 
-            _groupsList.Add(new Group(new Point(220, 80), new Point(420, 320), new Point(238, 125)));
-            _groupsList.Add(new Group(new Point(420, 80), new Point(620, 320), new Point(458, 125)));
-            _groupsList.Add(new Group(new Point(620, 80), new Point(820, 320), new Point(678, 125)));
-            _groupsList.Add(new Group(new Point(820, 80), new Point(1020, 320), new Point(898, 125)));
+            GroupsList.Add(new Group(new Point(220, 80), new Point(420, 320), new Point(238, 125), 'a'));
+            GroupsList.Add(new Group(new Point(420, 80), new Point(620, 320), new Point(458, 125), 'b'));
+            GroupsList.Add(new Group(new Point(620, 80), new Point(820, 320), new Point(678, 125), 'c'));
+            GroupsList.Add(new Group(new Point(820, 80), new Point(1020, 320), new Point(898, 125), 'd'));
 
-            _groupsList.Add(new Group(new Point(220, 323), new Point(420, 563), new Point(238, 368)));
-            _groupsList.Add(new Group(new Point(420, 323), new Point(620, 563), new Point(458, 368)));
-            _groupsList.Add(new Group(new Point(620, 323), new Point(820, 563), new Point(678, 368)));
-            _groupsList.Add(new Group(new Point(820, 323), new Point(1020, 563), new Point(898, 368)));
+            GroupsList.Add(new Group(new Point(220, 323), new Point(420, 563), new Point(238, 368), 'e'));
+            GroupsList.Add(new Group(new Point(420, 323), new Point(620, 563), new Point(458, 368), 'f'));
+            GroupsList.Add(new Group(new Point(620, 323), new Point(820, 563), new Point(678, 368), 'g'));
+            GroupsList.Add(new Group(new Point(820, 323), new Point(1020, 563), new Point(898, 368), 'h'));
 
             for (int i = 0; i < POTNUMBERS.Count; i++)
-                _potsList.Add(new Pot(DataBaseConnection.FillPotFromDataBase(i+1,InitialPositionsList)));
-
+                PotsList.Add(new Pot(DataBaseConnection.FillPotFromDataBase(i + 1, InitialPositionsList)));
+            // MOVING RUSSIA TO 1 GROUP A
+            //called in form1.cs for bug in here
+            
         }
+
 
         public static void ValidateClicked()
         {
-            DataBaseConnection.UpdateGroupForEachTeamInDataBase(_groupsList); 
+            DataBaseConnection.UpdateGroupForEachTeamInDataBase(GroupsList); 
             CalculateSchedules();               
             UpdateSchedulesInDataBase();
             //pop the second form here
@@ -111,13 +114,13 @@ namespace RepoRepo
 
         private static void CalculateSchedules()
         {
-            foreach (var group in _groupsList)
+            foreach (var group in GroupsList)
                 group.PlanMatches();
         }
 
         private static void UpdateSchedulesInDataBase()
         {
-            foreach (var group in _groupsList)
+            foreach (var group in GroupsList)
                 Connector.AddScheduleToDataBase(group.GetSchedule().GetMatches());
         }
 
@@ -125,6 +128,24 @@ namespace RepoRepo
         {
             if (_totalTeamsCount == NUMBEROFTEAMS)
                 _validationButton.Enabled = true;
+        }
+
+        private static void AutomaticSort()
+        {
+            //
+
+            //randomize picking from pot1
+                //push into groups a->h (one by one)  
+            
+            //randomize picking from pot2
+                //push into groups a->h (one by one)  
+
+            //randomize picking from pot3
+                //push into groups a->h (one by one)  
+
+            //randomize picking from pot4
+                //push into groups a->h (one by one)  
+
         }
 
         public static void ProcessMovement(Team team, Point whereLeft)
@@ -136,7 +157,7 @@ namespace RepoRepo
 
             Group groupToProcess = CharToGroup(groupChar);
 
-            if (groupToProcess.ProcesssDroppedTeam(team, groupChar))
+            if (groupToProcess.ProcesssDroppedTeam(team))
             {
                 team.MoveTeam(groupToProcess.PositionWhereToGo(team));
                 ++_totalTeamsCount;
@@ -144,7 +165,8 @@ namespace RepoRepo
                 team.ShowTeam();
                 CheckIfDrawn();
             }
-            else team.MoveTeam(team.ReturnWhereLeftPoint());
+            else
+                team.MoveTeam(team.ReturnWhereLeftPoint());
 
             //if it's valid for a certain group give it the right position and flip its picture
             //else give it _initPoint
@@ -152,20 +174,20 @@ namespace RepoRepo
 
         private static void RemoveTeamFromPot(Team team)
         {
-            _potsList[team.Pot-1].RemoveTeamFromPot(team);
+            PotsList[team.Pot-1].RemoveTeamFromPot(team);
         }
 
         public static Group CharToGroup(char groupChar)
         {
             int index = 'h' - groupChar + 1;
-            return _groupsList[_groupsList.Count-index];
+            return GroupsList[GroupsList.Count-index];
         }
 
         private static char PositionToGroupChar(Point whereLeft)
         {
-            for (int i = 0; i < _groupsList.Count; i++)
+            for (int i = 0; i < GroupsList.Count; i++)
             {
-                if (Contains(whereLeft, _groupsList[i].BORDERPOINTS[0], _groupsList[i].BORDERPOINTS[2]))
+                if (Contains(whereLeft, GroupsList[i].BORDERPOINTS[0], GroupsList[i].BORDERPOINTS[2]))
                     return (char)('a' + i);
             }
 
@@ -186,7 +208,7 @@ namespace RepoRepo
             if (pot != 1 && pot != 2 && pot != 3 && pot != 4)
                 throw new NullReferenceException("Engine32Teams::GetPotPictureBoxes() -> passed pot is invalid.");
 
-            return _potsList[pot - 1].GetPictureBoxes();
+            return PotsList[pot - 1].GetPictureBoxes();
         }
 
         private static void SetMenuBox()
@@ -225,6 +247,13 @@ namespace RepoRepo
         }
 
 
-        
+        public static void RussiaToA()
+        {
+            var team = PotsList[0]._potTeams[0];
+            team.Flag.Location = new Point(290, 167);
+            team.ImitateMouseUp(team.Flag);
+            team.Flag.BringToFront();
+            team.ShowTeam();
+        }
     }
 }

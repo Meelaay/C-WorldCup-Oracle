@@ -51,10 +51,9 @@ namespace RepoRepo
             {
                 this.Controls.Add(picture);
             }
-
-
-            this.pictureBox1.SendToBack();
+            Engine32Teams.RussiaToA();
             
+            this.pictureBox1.SendToBack();
 
         }
 

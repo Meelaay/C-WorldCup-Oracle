@@ -12,8 +12,6 @@ namespace RepoRepo
         public string Continent { get; set; }
         public string Group { get; set; }
 
-        
-
         public BasicTeam(PictureBox flag, string name, string continent, string group)
         {
             Flag      = flag;
@@ -21,6 +19,7 @@ namespace RepoRepo
             Continent = continent;
             Group     = group;
         }
+        
 
         public static PictureBox DeepCopy(PictureBox pb)
         {
@@ -31,9 +30,9 @@ namespace RepoRepo
         {
             BasicTeam teamToReturn = new BasicTeam( 
                 DeepCopy(basicTeam.Flag),
-                String.Copy(basicTeam.Name),
-                String.Copy(basicTeam.Continent),
-                String.Copy(basicTeam.Group)
+                string.Copy(basicTeam.Name),
+                string.Copy(basicTeam.Continent),
+                string.Copy(basicTeam.Group)
             );
             return teamToReturn;
         }
@@ -41,16 +40,12 @@ namespace RepoRepo
         public static List<BasicTeam> DeepCopyTeamsList(List<Team> teamsList)
         {
             List<BasicTeam> listToReturn = new List<BasicTeam>();
+
             foreach (var team in teamsList)
-            {
                 listToReturn.Add(DeepCopyTeam((BasicTeam)team));
-            }
+
             return listToReturn;
         }
-
-        
-
-        
 
         protected Point GetPosition(Control c)
         {

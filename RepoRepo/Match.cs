@@ -5,7 +5,6 @@ namespace RepoRepo
 {
     public class Match
     {
-
         //private int _matchID; -> could be used later to identify matches or maybe use just names
 
         public DateTime MatchDate { get; } //<- check if datetime or timespan or right type ?
@@ -14,15 +13,9 @@ namespace RepoRepo
 
         public Label DateLabel = new Label();
 
-        /*
-        private int score1;
-        private int score2;
-        */
+        public TextBox score1 { get; }
+        public TextBox score2 { get; }
 
-        public static PictureBox DeepCopy(PictureBox pb)
-        {
-            return new PictureBox { Name = pb.Name, Image = pb.Image, Size = pb.Size, SizeMode = pb.SizeMode };
-        }
 
         
 

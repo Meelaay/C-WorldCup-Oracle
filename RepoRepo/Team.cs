@@ -48,7 +48,7 @@ namespace RepoRepo
             IsAfrica = IsAsia = IsEurope = IsNorthAmerica = IsSouthAmerica = false;
             this.Pot = Convert.ToInt32(pot);
             InitContinentBools(continent);
-            _initialImage = Image.FromFile(path);
+            this._initialImage = Image.FromFile(path);
             this.Flag = new PictureBox {Image = Image.FromFile(path)};
             this.Flag.Size = new Size((int)(Flag.Image.Width / 1.25), (int)(Flag.Image.Height / 1.25));
             this.Flag.SizeMode = PictureBoxSizeMode.StretchImage;
@@ -61,8 +61,9 @@ namespace RepoRepo
             this.Flag.MouseDown += _mouseEventHandlers[0];
             this.Flag.MouseMove += _mouseEventHandlers[1];
             this.Flag.MouseUp += _mouseEventHandlers[2];
-
-            HideTeam(); //<-- BUG probably not right spot
+            this.Flag.BringToFront();
+            //HideTeam(); 
+            //<-- BUG probably not right spot
         }
         private void InitContinentBools(string continent)
         {
@@ -89,14 +90,7 @@ namespace RepoRepo
 
         public void HideTeam()
         {
-
-            switch (Pot)
-            {
-                case 1: Flag.Image = _potImages[0]; return;
-                case 2: Flag.Image = _potImages[1]; return;
-                case 3: Flag.Image = _potImages[2]; return;
-                case 4: Flag.Image = _potImages[3]; return;
-            }
+            Flag.Image = _potImages[Pot - 1];
         }
 
         
@@ -113,21 +107,11 @@ namespace RepoRepo
             Flag.MouseUp -= _mouseEventHandlers[2];
         }
 
-
-
-        
-
-        
-
         public void SetFlagPosition(Point position)
         {
             Flag.Left = position.X;
             Flag.Top = position.Y;
         }
-
-        //As static function in engine
-        
-
 
         private void flag_mouseDown(object sender, MouseEventArgs e)
         {
@@ -154,19 +138,20 @@ namespace RepoRepo
             a.Location = _initialPoint;
             
             Engine32Teams.ProcessMovement(this, _whereLeftPoint);
-
+            a.BringToFront();
             //TODO on release freeze team in position
         }
 
-        
+        public void ImitateMouseUp(PictureBox picture)
+        {
+            flag_mouseUp(picture, null);
+        }
 
         public Point ReturnWhereLeftPoint()
         {
             return _initialPoint;
         }
 
-        
-        
         
         //todo create a ctor overload for future use 
         
