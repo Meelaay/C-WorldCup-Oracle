@@ -53,7 +53,6 @@ namespace RepoRepo
             for (int i = 0; i < POTNUMBERS.Count; i++)
             {
                 PotsList.Add(new Pot(DataBaseConnection.FillPotFromDataBase(i + 1, InitialPositionsList)));
-                PotsList[i].SortInSubsets();
             }
 
             // MOVING RUSSIA TO 1 GROUP A
@@ -63,7 +62,7 @@ namespace RepoRepo
 
         public static void RussiaToA()
         {
-            var team = PotsList[0]._potTeams[0];
+            var team = PotsList[0]._potTeams[2][0];
             team.Flag.Location = new Point(290, 167);
             team.ImitateMouseUp(team.Flag);
             team.Flag.BringToFront();
@@ -84,10 +83,10 @@ namespace RepoRepo
         {
             for (int i = 0; i < (GroupsList.Count); i++)
             {
-                var team = PotsList[1].GetRandomTeamFromSubSet("europe");
-                MoveTeamToGroup(team, (char)('a' + i));
+                //var team = PotsList[1].GetRandomTeamFromSubSet("europe");
+                //MoveTeamToGroup(team, (char)('a' + i));
 
-                PotsList[1].SubSetEurope = PotsList[1].SubSetEurope;
+                //PotsList[1].SubSetEurope = PotsList[1].SubSetEurope;
             }
             
         }

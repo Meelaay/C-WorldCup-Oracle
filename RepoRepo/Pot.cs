@@ -7,50 +7,57 @@ namespace RepoRepo
 {
     public class Pot
     {
-        public List<Team> _potTeams;//todo make private and fix where used public
-        //TODO make _potTeams a List<List<Team>> each 
+        public List<List<Team>> _potTeams = new List<List<Team>>(capacity: 5);//todo make private and fix where used public
 
-        public List<Team> SubSetAfrica = new List<Team>();
-        public List<Team> SubSetAsia = new List<Team>();
-        public List<Team> SubSetEurope = new List<Team>();
-        public List<Team> SubSetNorthAmerica = new List<Team>();
-        public List<Team> SubSetSouthAmerica = new List<Team>();
 
         private static readonly Random _randomizer = new Random();
         
         //todo think of what should each pot have and know about in terms of properties, should it return a specific team for the group to process?
-        public void SortInSubsets()
-        {
-            foreach (var team in _potTeams)
-            {
-                if (team.IsAfrica){ SubSetAfrica.Add(team); continue; }
-                if (team.IsAsia) { SubSetAsia.Add(team); continue; }
-                if (team.IsEurope) { SubSetEurope.Add(team); continue; }
-                if (team.IsNorthAmerica) { SubSetNorthAmerica.Add(team); continue; }
-                if (team.IsSouthAmerica) { SubSetSouthAmerica.Add(team); continue; }
-            }
-        }
+        
 
-        public Pot(List<Team> list)
+        private int ContinentIndexInPot(string continent)
         {
-            if (list.Count == 0 || list == null)
+            switch (continent)
+            {
+                case "africa":
+                    return 0;
+                case "asia":
+                    return 1;
+                case "europe":
+                    return 2;
+                case "northamerica":
+                    return 3;
+                case "southamerica":
+                    return 4;
+            }
+            throw new Exception("Pot::ContinentIndexInPot() -> invalid continent");
+        }
+        public Pot(List<Team> teamsList)
+        {
+            if (teamsList.Count == 0 || teamsList == null)
                 throw new NullReferenceException("Pot::Pot() -> list arg passed is empty or null");
-            
-            _potTeams = list;
+            //extract a method (for i .. <<>>.capacity) INIT_POTTEAMS
+            _potTeams.Add(new List<Team>()); _potTeams.Add(new List<Team>()); _potTeams.Add(new List<Team>()); _potTeams.Add(new List<Team>()); _potTeams.Add(new List<Team>());
+            foreach (var team in teamsList)
+            {
+                _potTeams[ContinentIndexInPot(team.Continent)].Add(team);
+            }
+
         }
 
         public void RemoveTeamFromPot(Team team)
         {
-            _potTeams.Remove(team);
+            _potTeams[ContinentIndexInPot(team.Continent)].Remove(team);
         }
 
         public Team GetRandomTeam()
         {
-            return _potTeams[_randomizer.Next(_potTeams.Count)];
+            int a = _randomizer.Next(5);
+            return _potTeams[a][_randomizer.Next(_potTeams[a].Count)];
         }
 
         public Team GetRandomTeamFromSubSet(string continent)
-        {
+        {/*
             switch (continent)
             {
                 case "africa":
@@ -63,7 +70,7 @@ namespace RepoRepo
                     return SubSetNorthAmerica[_randomizer.Next(SubSetNorthAmerica.Count)];
                 case "southamerica":
                     return SubSetSouthAmerica[_randomizer.Next(SubSetSouthAmerica.Count)];
-            }
+            }*/
             throw new Exception("Pot::GetRandomTeamFromSubset() -> invalid continent");
         }
 
@@ -73,9 +80,12 @@ namespace RepoRepo
                 throw new NullReferenceException("GetPictureBoxes -> _potTeams is empty or null");
             
             List<PictureBox> pictureBoxes = new List<PictureBox>();
-            foreach (var team in _potTeams)
+            foreach (var teamSet in _potTeams)
             {
-                pictureBoxes.Add(team.Flag);
+                foreach (var team in teamSet)
+                {
+                    pictureBoxes.Add(team.Flag);
+                }
             }
 
             return pictureBoxes;
