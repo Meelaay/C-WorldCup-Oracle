@@ -89,5 +89,15 @@ namespace RepoRepo
             
             //pop the new form2 with groupA as main one then fix the other stuff of visibility and clicking
         }
+
+        private void pot1Button_Click(object sender, EventArgs e)
+        {
+            Engine32Teams.RandomizePot1();
+        }
+
+        private void pot2Button_Click(object sender, EventArgs e)
+        {
+            Engine32Teams.RandomizePot2();
+        }
     }
 }

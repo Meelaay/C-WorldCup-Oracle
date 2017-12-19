@@ -51,12 +51,55 @@ namespace RepoRepo
             GroupsList.Add(new Group(new Point(820, 323), new Point(1020, 563), new Point(898, 368), 'h'));
 
             for (int i = 0; i < POTNUMBERS.Count; i++)
+            {
                 PotsList.Add(new Pot(DataBaseConnection.FillPotFromDataBase(i + 1, InitialPositionsList)));
+                PotsList[i].SortInSubsets();
+            }
+
             // MOVING RUSSIA TO 1 GROUP A
             //called in form1.cs for bug in here
+
+        }
+
+        public static void RussiaToA()
+        {
+            var team = PotsList[0]._potTeams[0];
+            team.Flag.Location = new Point(290, 167);
+            team.ImitateMouseUp(team.Flag);
+            team.Flag.BringToFront();
+            team.ShowTeam();
+        }
+
+        public static void RandomizePot1()
+        {
+            for (int i = 0; i < GroupsList.Count; i++)
+            {
+                var team = PotsList[0].GetRandomTeam();
+                MoveTeamToGroup(team, (char) ('a' + i));
+            }
             
         }
 
+        public static void RandomizePot2()
+        {
+            for (int i = 0; i < (GroupsList.Count); i++)
+            {
+                var team = PotsList[1].GetRandomTeamFromSubSet("europe");
+                MoveTeamToGroup(team, (char)('a' + i));
+
+                PotsList[1].SubSetEurope = PotsList[1].SubSetEurope;
+            }
+            
+        }
+
+        private static void MoveTeamToGroup(Team team, char groupChar)
+        {
+            var group = CharToGroup(groupChar);
+            team.Flag.Location = new Point(group.TEAMPOSITIONS[0].X + 5, group.TEAMPOSITIONS[0].Y + 5);
+            team.ImitateMouseUp(team.Flag);
+            team.Flag.BringToFront();
+            team.ShowTeam();
+        }
 
         public static void ValidateClicked()
         {
@@ -247,13 +290,8 @@ namespace RepoRepo
         }
 
 
-        public static void RussiaToA()
-        {
-            var team = PotsList[0]._potTeams[0];
-            team.Flag.Location = new Point(290, 167);
-            team.ImitateMouseUp(team.Flag);
-            team.Flag.BringToFront();
-            team.ShowTeam();
-        }
+        
+
+        
     }
 }

@@ -35,6 +35,10 @@
             this.manualToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.automaticToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.buttonValidate = new System.Windows.Forms.Button();
+            this.pot1Button = new System.Windows.Forms.Button();
+            this.pot2Button = new System.Windows.Forms.Button();
+            this.pot3Button = new System.Windows.Forms.Button();
+            this.pot4Button = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -73,20 +77,20 @@
             this.manualToolStripMenuItem,
             this.automaticToolStripMenuItem});
             this.drawTypeToolStripMenuItem1.Name = "drawTypeToolStripMenuItem1";
-            this.drawTypeToolStripMenuItem1.Size = new System.Drawing.Size(154, 26);
+            this.drawTypeToolStripMenuItem1.Size = new System.Drawing.Size(181, 26);
             this.drawTypeToolStripMenuItem1.Text = "Draw Type";
             // 
             // manualToolStripMenuItem
             // 
             this.manualToolStripMenuItem.Name = "manualToolStripMenuItem";
-            this.manualToolStripMenuItem.Size = new System.Drawing.Size(153, 26);
+            this.manualToolStripMenuItem.Size = new System.Drawing.Size(181, 26);
             this.manualToolStripMenuItem.Text = "Manual";
             this.manualToolStripMenuItem.Click += new System.EventHandler(this.manualToolStripMenuItem_Click);
             // 
             // automaticToolStripMenuItem
             // 
             this.automaticToolStripMenuItem.Name = "automaticToolStripMenuItem";
-            this.automaticToolStripMenuItem.Size = new System.Drawing.Size(153, 26);
+            this.automaticToolStripMenuItem.Size = new System.Drawing.Size(181, 26);
             this.automaticToolStripMenuItem.Text = "Automatic";
             this.automaticToolStripMenuItem.Click += new System.EventHandler(this.automaticToolStripMenuItem_Click);
             // 
@@ -100,11 +104,53 @@
             this.buttonValidate.UseVisualStyleBackColor = true;
             this.buttonValidate.Click += new System.EventHandler(this.buttonValidate_Click);
             // 
+            // pot1Button
+            // 
+            this.pot1Button.Location = new System.Drawing.Point(407, 721);
+            this.pot1Button.Name = "pot1Button";
+            this.pot1Button.Size = new System.Drawing.Size(75, 42);
+            this.pot1Button.TabIndex = 4;
+            this.pot1Button.Text = "Pot 1";
+            this.pot1Button.UseVisualStyleBackColor = true;
+            this.pot1Button.Click += new System.EventHandler(this.pot1Button_Click);
+            // 
+            // pot2Button
+            // 
+            this.pot2Button.Location = new System.Drawing.Point(488, 721);
+            this.pot2Button.Name = "pot2Button";
+            this.pot2Button.Size = new System.Drawing.Size(75, 42);
+            this.pot2Button.TabIndex = 4;
+            this.pot2Button.Text = "Pot 2";
+            this.pot2Button.UseVisualStyleBackColor = true;
+            this.pot2Button.Click += new System.EventHandler(this.pot2Button_Click);
+            // 
+            // pot3Button
+            // 
+            this.pot3Button.Location = new System.Drawing.Point(1172, 721);
+            this.pot3Button.Name = "pot3Button";
+            this.pot3Button.Size = new System.Drawing.Size(75, 42);
+            this.pot3Button.TabIndex = 4;
+            this.pot3Button.Text = "Pot 3";
+            this.pot3Button.UseVisualStyleBackColor = true;
+            // 
+            // pot4Button
+            // 
+            this.pot4Button.Location = new System.Drawing.Point(1253, 721);
+            this.pot4Button.Name = "pot4Button";
+            this.pot4Button.Size = new System.Drawing.Size(75, 42);
+            this.pot4Button.TabIndex = 4;
+            this.pot4Button.Text = "Pot 4";
+            this.pot4Button.UseVisualStyleBackColor = true;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1374, 842);
+            this.Controls.Add(this.pot4Button);
+            this.Controls.Add(this.pot3Button);
+            this.Controls.Add(this.pot2Button);
+            this.Controls.Add(this.pot1Button);
             this.Controls.Add(this.buttonValidate);
             this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.menuStrip1);
@@ -132,6 +178,10 @@
         private System.Windows.Forms.ToolStripMenuItem manualToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem automaticToolStripMenuItem;
         private System.Windows.Forms.Button buttonValidate;
+        private System.Windows.Forms.Button pot1Button;
+        private System.Windows.Forms.Button pot2Button;
+        private System.Windows.Forms.Button pot3Button;
+        private System.Windows.Forms.Button pot4Button;
     }
 }
 
