@@ -99,5 +99,15 @@ namespace RepoRepo
         {
             Engine32Teams.RandomizePot2();
         }
+
+        private void pot3Button_Click(object sender, EventArgs e)
+        {
+            Engine32Teams.RandomizePot3();
+        }
+
+        private void pot4Button_Click(object sender, EventArgs e)
+        {
+            Engine32Teams.RandomizePot4();
+        }
     }
 }

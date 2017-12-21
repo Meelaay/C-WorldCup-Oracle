@@ -9,9 +9,9 @@ namespace RepoRepo
     {
         public List<List<Team>> _potTeams = new List<List<Team>>(capacity: 5);//todo make private and fix where used public
 
-
         private static readonly Random _randomizer = new Random();
         
+        private static readonly List<int> stateArray = new List<int> {1,2,3,4,5,6,7,8,9};
         //todo think of what should each pot have and know about in terms of properties, should it return a specific team for the group to process?
         
 
@@ -37,6 +37,7 @@ namespace RepoRepo
             if (teamsList.Count == 0 || teamsList == null)
                 throw new NullReferenceException("Pot::Pot() -> list arg passed is empty or null");
             //extract a method (for i .. <<>>.capacity) INIT_POTTEAMS
+            //make inline add add add add ..
             _potTeams.Add(new List<Team>()); _potTeams.Add(new List<Team>()); _potTeams.Add(new List<Team>()); _potTeams.Add(new List<Team>()); _potTeams.Add(new List<Team>());
             foreach (var team in teamsList)
             {
@@ -50,28 +51,26 @@ namespace RepoRepo
             _potTeams[ContinentIndexInPot(team.Continent)].Remove(team);
         }
 
-        public Team GetRandomTeam()
+        public int GetTotalNumberOfTeams()
         {
-            int a = _randomizer.Next(5);
-            return _potTeams[a][_randomizer.Next(_potTeams[a].Count)];
+            int n = 0;
+            foreach (var subset in _potTeams)
+                foreach (var unused in subset)
+                    n++;
+            return n;
+        }
+
+        public bool ContainsContinent(string continent)
+        {
+            return _potTeams[ContinentIndexInPot(continent)].Count != 0;
         }
 
         public Team GetRandomTeamFromSubSet(string continent)
-        {/*
-            switch (continent)
-            {
-                case "africa":
-                    return SubSetAfrica[_randomizer.Next(SubSetAfrica.Count)];
-                case "asia":
-                    return SubSetAsia[_randomizer.Next(SubSetAsia.Count)];
-                case "europe":
-                    return SubSetEurope[_randomizer.Next(SubSetEurope.Count)];
-                case "northamerica":
-                    return SubSetNorthAmerica[_randomizer.Next(SubSetNorthAmerica.Count)];
-                case "southamerica":
-                    return SubSetSouthAmerica[_randomizer.Next(SubSetSouthAmerica.Count)];
-            }*/
-            throw new Exception("Pot::GetRandomTeamFromSubset() -> invalid continent");
+        {
+            int i = ContinentIndexInPot(continent);
+            int size = _potTeams[i].Count;
+            return _potTeams[i][_randomizer.Next(size)];
+            
         }
 
         public List<PictureBox> GetPictureBoxes()

@@ -62,35 +62,153 @@ namespace RepoRepo
 
         public static void RussiaToA()
         {
-            var team = PotsList[0]._potTeams[2][0];
-            team.Flag.Location = new Point(290, 167);
-            team.ImitateMouseUp(team.Flag);
-            team.Flag.BringToFront();
-            team.ShowTeam();
+            MoveTeamToGroup(PotsList[0]._potTeams[2][0], 'a');
         }
+
+        
 
         public static void RandomizePot1()
         {
-            for (int i = 0; i < GroupsList.Count; i++)
+            Team randomTeam;
+            int i = 0;
+            while (PotsList[0].GetTotalNumberOfTeams() != 0)
             {
-                var team = PotsList[0].GetRandomTeam();
-                MoveTeamToGroup(team, (char) ('a' + i));
+                while (PotsList[0].ContainsContinent("europe"))
+                {
+                    randomTeam = PotsList[0].GetRandomTeamFromSubSet("europe");
+                    if (GroupsList[i].IsValid(randomTeam))
+                        MoveTeamToGroup(randomTeam, GroupsList[i]._groupChar);
+                    i++;
+                }
+                i = 0;
+                while (PotsList[0].ContainsContinent("southamerica"))
+                {
+                    randomTeam = PotsList[0].GetRandomTeamFromSubSet("southamerica");
+                    if (GroupsList[i].IsValid(randomTeam))
+                        MoveTeamToGroup(randomTeam, GroupsList[i]._groupChar);
+                    i++;
+                }
+                i = 0;
             }
-            
         }
 
         public static void RandomizePot2()
         {
-            for (int i = 0; i < (GroupsList.Count); i++)
+            Team randomTeam;
+            int i = 0;
+            while (PotsList[1].GetTotalNumberOfTeams() != 0)
             {
-                //var team = PotsList[1].GetRandomTeamFromSubSet("europe");
-                //MoveTeamToGroup(team, (char)('a' + i));
-
-                //PotsList[1].SubSetEurope = PotsList[1].SubSetEurope;
+                while (PotsList[1].ContainsContinent("southamerica"))
+                {
+                    randomTeam = PotsList[1].GetRandomTeamFromSubSet("southamerica");
+                    if (GroupsList[i].IsValid(randomTeam))
+                        MoveTeamToGroup(randomTeam, GroupsList[i]._groupChar);
+                    i++;
+                }
+                i = 0;
+                while (PotsList[1].ContainsContinent("northamerica"))
+                {
+                    randomTeam = PotsList[1].GetRandomTeamFromSubSet("northamerica");
+                    if (GroupsList[i].IsValid(randomTeam))
+                        MoveTeamToGroup(randomTeam, GroupsList[i]._groupChar);
+                    i++;
+                }
+                i = 0;
+                while (PotsList[1].ContainsContinent("europe"))
+                {
+                    randomTeam = PotsList[1].GetRandomTeamFromSubSet("europe");
+                    if (GroupsList[i].IsValid(randomTeam))
+                        MoveTeamToGroup(randomTeam, GroupsList[i]._groupChar);
+                    i++;
+                }
+                i = 0;
             }
-            
+
         }
 
+        public static void RandomizePot3()
+        {
+            Team randomTeam;
+            int i = 0;
+            while (PotsList[2].GetTotalNumberOfTeams() != 0)
+            {
+                while (PotsList[2].ContainsContinent("northamerica"))
+                {
+                    randomTeam = PotsList[2].GetRandomTeamFromSubSet("northamerica");
+                    if (GroupsList[i].IsValid(randomTeam))
+                        MoveTeamToGroup(randomTeam, GroupsList[i]._groupChar);
+                    i++;
+                }
+                i = 0;
+                while (PotsList[2].ContainsContinent("europe"))
+                {
+                    randomTeam = PotsList[2].GetRandomTeamFromSubSet("europe");
+                    if (GroupsList[i].IsValid(randomTeam))
+                        MoveTeamToGroup(randomTeam, GroupsList[i]._groupChar);
+                    i++;
+                }
+                i = 0;
+                while (PotsList[2].ContainsContinent("africa"))
+                {
+                    randomTeam = PotsList[2].GetRandomTeamFromSubSet("africa");
+                    if (GroupsList[i].IsValid(randomTeam))
+                        MoveTeamToGroup(randomTeam, GroupsList[i]._groupChar);
+                    i++;
+                }
+                i = 0;
+                while (PotsList[2].ContainsContinent("asia"))
+                {
+                    randomTeam = PotsList[2].GetRandomTeamFromSubSet("asia");
+                    if (GroupsList[i].IsValid(randomTeam))
+                        MoveTeamToGroup(randomTeam, GroupsList[i]._groupChar);
+                    i++;
+                }
+                i = 0;
+            }
+
+        }
+
+        public static void RandomizePot4()
+        {
+            Team randomTeam;
+            int i = 0;
+            while (PotsList[3].GetTotalNumberOfTeams() != 0)
+            {
+                while (PotsList[3].ContainsContinent("europe"))
+                {
+                    randomTeam = PotsList[3].GetRandomTeamFromSubSet("europe");
+                    if (GroupsList[i].IsValid(randomTeam))
+                        MoveTeamToGroup(randomTeam, GroupsList[i]._groupChar);
+                    i++;
+                }
+                i = 0;
+                while (PotsList[3].ContainsContinent("africa"))
+                {
+                    randomTeam = PotsList[3].GetRandomTeamFromSubSet("africa");
+                    if (GroupsList[i].IsValid(randomTeam))
+                        MoveTeamToGroup(randomTeam, GroupsList[i]._groupChar);
+                    i++;
+                }
+                i = 0;
+                while (PotsList[3].ContainsContinent("asia"))
+                {
+                    randomTeam = PotsList[3].GetRandomTeamFromSubSet("asia");
+                    if (GroupsList[i].IsValid(randomTeam))
+                        MoveTeamToGroup(randomTeam, GroupsList[i]._groupChar);
+                    i++;
+                }
+                i = 0;
+                while (PotsList[3].ContainsContinent("northamerica"))
+                {
+                    randomTeam = PotsList[3].GetRandomTeamFromSubSet("northamerica");
+                    if (GroupsList[i].IsValid(randomTeam))
+                        MoveTeamToGroup(randomTeam, GroupsList[i]._groupChar);
+                    i++;
+                }
+                i = 0;
+            }
+
+        }
         private static void MoveTeamToGroup(Team team, char groupChar)
         {
             var group = CharToGroup(groupChar);

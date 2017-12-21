@@ -77,20 +77,20 @@
             this.manualToolStripMenuItem,
             this.automaticToolStripMenuItem});
             this.drawTypeToolStripMenuItem1.Name = "drawTypeToolStripMenuItem1";
-            this.drawTypeToolStripMenuItem1.Size = new System.Drawing.Size(181, 26);
+            this.drawTypeToolStripMenuItem1.Size = new System.Drawing.Size(154, 26);
             this.drawTypeToolStripMenuItem1.Text = "Draw Type";
             // 
             // manualToolStripMenuItem
             // 
             this.manualToolStripMenuItem.Name = "manualToolStripMenuItem";
-            this.manualToolStripMenuItem.Size = new System.Drawing.Size(181, 26);
+            this.manualToolStripMenuItem.Size = new System.Drawing.Size(153, 26);
             this.manualToolStripMenuItem.Text = "Manual";
             this.manualToolStripMenuItem.Click += new System.EventHandler(this.manualToolStripMenuItem_Click);
             // 
             // automaticToolStripMenuItem
             // 
             this.automaticToolStripMenuItem.Name = "automaticToolStripMenuItem";
-            this.automaticToolStripMenuItem.Size = new System.Drawing.Size(181, 26);
+            this.automaticToolStripMenuItem.Size = new System.Drawing.Size(153, 26);
             this.automaticToolStripMenuItem.Text = "Automatic";
             this.automaticToolStripMenuItem.Click += new System.EventHandler(this.automaticToolStripMenuItem_Click);
             // 
@@ -132,6 +132,7 @@
             this.pot3Button.TabIndex = 4;
             this.pot3Button.Text = "Pot 3";
             this.pot3Button.UseVisualStyleBackColor = true;
+            this.pot3Button.Click += new System.EventHandler(this.pot3Button_Click);
             // 
             // pot4Button
             // 
@@ -141,6 +142,7 @@
             this.pot4Button.TabIndex = 4;
             this.pot4Button.Text = "Pot 4";
             this.pot4Button.UseVisualStyleBackColor = true;
+            this.pot4Button.Click += new System.EventHandler(this.pot4Button_Click);
             // 
             // Form1
             // 

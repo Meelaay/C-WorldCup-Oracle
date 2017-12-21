@@ -6,7 +6,7 @@ namespace RepoRepo
 {
     public class Group
     {
-        private char _groupChar;
+        public char _groupChar;
 
         private List<Team> _groupTeams = new List<Team>();
 
@@ -91,6 +91,11 @@ namespace RepoRepo
         
 
         //todo put GetPosition as a static func in ENGINE
+        public bool IsValid(Team team)
+        {
+            return !IsGroupComplete() && (IsValidForInsertionPotWise(team) && IsValidForInsertionContinentWise(team));
+        }
+
 
         public bool ProcesssDroppedTeam(Team droppedTeam)
         {
