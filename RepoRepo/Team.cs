@@ -62,7 +62,7 @@ namespace RepoRepo
             this.Flag.MouseMove += _mouseEventHandlers[1];
             this.Flag.MouseUp += _mouseEventHandlers[2];
             this.Flag.BringToFront();
-            //HideTeam(); 
+            HideTeam(); 
             //<-- BUG probably not right spot
         }
         private void InitContinentBools(string continent)
