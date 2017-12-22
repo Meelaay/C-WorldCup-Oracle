@@ -36,6 +36,16 @@ namespace RepoRepo
             _myConnection.ConnectionString = ConnectionString;
         }
 
+        public void UpdateMatchesInDataBase(List<Match> matches)
+        {
+            
+        }
+
+        private void UpdateMatchInDataBase(Match match)
+        {
+            
+        }
+
         public void AddScheduleToDataBase(List<Match> matchesList)
         {
             foreach (var match in matchesList)
@@ -149,7 +159,6 @@ namespace RepoRepo
                 throw new NullReferenceException("DataBaseConnection::FillPotFromDataBase() -> teamsListOfPot() is empty.");
 
             return teamsListOfPot;
-
         }
 
     }
