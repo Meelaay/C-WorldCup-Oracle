@@ -51,21 +51,32 @@ namespace RepoRepo
             GroupsList.Add(new Group(new Point(820, 323), new Point(1020, 563), new Point(898, 368), 'h'));
 
             for (int i = 0; i < POTNUMBERS.Count; i++)
-            {
                 PotsList.Add(new Pot(DataBaseConnection.FillPotFromDataBase(i + 1, InitialPositionsList)));
-            }
 
             // MOVING RUSSIA TO 1 GROUP A
             //called in form1.cs for bug in here
 
         }
 
+        public static void ShowAndFixPosition()
+        {
+            foreach (var pot in PotsList)
+                pot.ShowPot();
+        }
+
+        public static void Hide()
+        {
+            foreach (var pot in PotsList)
+                pot.HidePot();
+        }
+
+
         public static void RussiaToA()
         {
             MoveTeamToGroup(PotsList[0]._potTeams[2][0], 'a');
         }
 
-        private static void RandomizeTeamsOfContinentOnPot(ref int i, int potNumber, string continent)
+        public static void RandomizeTeamsOfContinentOnPot(ref int i, int potNumber, string continent)
         {
             while (PotsList[potNumber-1].ContainsContinent(continent))
             {
@@ -147,14 +158,18 @@ namespace RepoRepo
             Schedule.FillPositions();
         }
 
-        private static void FillControlsOfForm2(List<Match> listOfMatches)
+        private static void FillControlsOfForm2(List<Match> listOfMatches, Button validationButton)
         {
             foreach (var match in listOfMatches)
             {
                 _form2.Controls.Add(match.Team1.Flag);
                 _form2.Controls.Add(match.Team2.Flag);
                 _form2.Controls.Add(match.DateLabel);
+                _form2.Controls.Add(match.score1);
+                _form2.Controls.Add(match.score2);
             }
+
+            _form2.Controls.Add(validationButton);
         }
 
         private static void RemoveControlsOfForm2()
@@ -165,7 +180,8 @@ namespace RepoRepo
             {
                 Type typeOfControl = _form2.Controls[i].GetType();
 
-                if (typeOfControl == typeof(PictureBox) || typeOfControl == typeof(Label))
+                if (typeOfControl == typeof(PictureBox) || typeOfControl == typeof(Label) 
+                    || typeOfControl == typeof(TextBox) || typeOfControl == typeof(Button))
                 {
                     var a = _form2.Controls[i];
                     Convert.ChangeType(a, typeOfControl);
@@ -180,7 +196,7 @@ namespace RepoRepo
         {
             group.GetSchedule().SetPositions();
             RemoveControlsOfForm2();
-            FillControlsOfForm2(group.GetSchedule().GetMatches());
+            FillControlsOfForm2(group.GetSchedule().GetMatches(), group.GetButtonFromSchedule());
             _form2.Refresh();
         }
 

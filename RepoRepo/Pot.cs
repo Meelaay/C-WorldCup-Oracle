@@ -46,6 +46,28 @@ namespace RepoRepo
 
         }
 
+        public void ShowPot()
+        {
+            foreach (var continent in _potTeams)
+                foreach (var team in continent)
+                {
+                    team.ShowTeam();
+                    team.RemoveEvents();
+                }
+                    
+        }
+
+        public void HidePot()
+        {
+            foreach (var continent in _potTeams)
+                foreach (var team in continent)
+                {
+                    team.HideTeam();
+
+                }
+
+        }
+
         public void RemoveTeamFromPot(Team team)
         {
             _potTeams[ContinentIndexInPot(team.Continent)].Remove(team);

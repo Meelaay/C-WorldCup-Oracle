@@ -55,6 +55,8 @@ namespace RepoRepo
             
             this.pictureBox1.SendToBack();
 
+            manualToolStripMenuItem_Click(null, null);
+
         }
 
         private void Form1_MouseUp(object sender, MouseEventArgs e)
@@ -75,12 +77,20 @@ namespace RepoRepo
 
         private void manualToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            //manual implementation
+            Engine32Teams.Hide();
+            pot1Button.Visible = false;
+            pot2Button.Visible = false;
+            pot3Button.Visible = false;
+            pot4Button.Visible = false;
         }
 
         private void automaticToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            //automatic impl..
+            Engine32Teams.ShowAndFixPosition();
+            pot1Button.Visible = true;
+            pot2Button.Visible = true;
+            pot3Button.Visible = true;
+            pot4Button.Visible = true;
         }
 
         private void buttonValidate_Click(object sender, EventArgs e)
@@ -93,21 +103,25 @@ namespace RepoRepo
         private void pot1Button_Click(object sender, EventArgs e)
         {
             Engine32Teams.RandomizePot1();
+            pot1Button.Enabled = false;
         }
 
         private void pot2Button_Click(object sender, EventArgs e)
         {
             Engine32Teams.RandomizePot2();
+            pot2Button.Enabled = false;
         }
 
         private void pot3Button_Click(object sender, EventArgs e)
         {
             Engine32Teams.RandomizePot3();
+            pot3Button.Enabled = false;
         }
 
         private void pot4Button_Click(object sender, EventArgs e)
         {
             Engine32Teams.RandomizePot4();
+            pot4Button.Enabled = false;
         }
     }
 }

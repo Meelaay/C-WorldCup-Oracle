@@ -19,11 +19,11 @@ namespace RepoRepo
 
         //todo add pot of every team? or maybe a bool that represent the continent
         #region Continent Bools
-        public bool IsAfrica { get; set; }
-        public bool IsAsia { get; set; }
-        public bool IsEurope { get; set; }
-        public bool IsNorthAmerica { get; set; }
-        public bool IsSouthAmerica { get; set; }
+            public bool IsAfrica { get; set; }
+            public bool IsAsia { get; set; }
+            public bool IsEurope { get; set; }
+            public bool IsNorthAmerica { get; set; }
+            public bool IsSouthAmerica { get; set; }
         #endregion
 
         private static readonly List<Image> _potImages = new List<Image>
@@ -104,7 +104,14 @@ namespace RepoRepo
             //todo check for null or exception
             Flag.MouseDown -= _mouseEventHandlers[0];
             Flag.MouseMove -= _mouseEventHandlers[1];
-            Flag.MouseUp -= _mouseEventHandlers[2];
+            Flag.MouseUp   -= _mouseEventHandlers[2];
+        }
+
+        public void AddEvents()
+        {
+            Flag.MouseDown += _mouseEventHandlers[0];
+            Flag.MouseMove += _mouseEventHandlers[1];
+            Flag.MouseUp   += _mouseEventHandlers[2];
         }
 
         public void SetFlagPosition(Point position)
@@ -128,6 +135,7 @@ namespace RepoRepo
             {
                 a.Left = e.X + a.Left - _mouseDownLocation.X;
                 a.Top = e.Y + a.Top - _mouseDownLocation.Y;
+
             }
         }
 
@@ -136,7 +144,7 @@ namespace RepoRepo
             var a = (PictureBox) sender;
             this._whereLeftPoint = a.Location;
             a.Location = _initialPoint;
-            
+
             Engine32Teams.ProcessMovement(this, _whereLeftPoint);
             a.BringToFront();
             //TODO on release freeze team in position
@@ -154,6 +162,7 @@ namespace RepoRepo
 
         
         //todo create a ctor overload for future use 
+
         
     }
 }

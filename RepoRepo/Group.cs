@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Windows.Forms;
 
 namespace RepoRepo
 {
@@ -15,11 +16,13 @@ namespace RepoRepo
         //todo group should it know about pots logic ? or just stuff inside itself ? 
         //todo is it the engine property to manage right team from right pot to the right group ? so should it have the logic ?
 
-        #region Group : Borders and positions
-        public readonly List<Point> BORDERPOINTS = new List<Point>();
+        public Button GetButtonFromSchedule()
+        {
+            return _schedule.ValidationButton;
+        }
 
+        public readonly List<Point> BORDERPOINTS = new List<Point>();
         public readonly List<Point> TEAMPOSITIONS = new List<Point>();
-        #endregion
 
         public Schedule GetSchedule()
         {

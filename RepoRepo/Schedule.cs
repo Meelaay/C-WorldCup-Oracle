@@ -14,7 +14,14 @@ namespace RepoRepo
 
         private static List<Point> _labelPositions = new List<Point>(capacity: 6);//TODO fix this initialize it
 
-        
+        public Button ValidationButton = new Button();
+
+        private void ValidateClick(object sender, EventArgs e)
+        {
+            ValidationButton.Enabled = false;
+            foreach (var match in _matchesList)
+                match.MakeFieldsReadOnly();
+        }
 
         public List<Match> GetMatches()
         {
@@ -23,21 +30,32 @@ namespace RepoRepo
 
         public Schedule()
         {
-            
+            ValidationButton.Click += ValidateClick;
+            ValidationButton.Text = "Validate";
+            ValidationButton.AutoSizeMode = AutoSizeMode.GrowAndShrink;
         }
 
         public void SetPositions()
         {
             for (int i = 0; i < 6; i++)
             {
-                _matchesList[i].Team1.Flag.Left = _team1Positions[i].X;
-                _matchesList[i].Team1.Flag.Top = _team1Positions[i].Y;
+                _matchesList[i].Team1.Flag.Location = _team1Positions[i];
 
-                _matchesList[i].Team2.Flag.Left = _team2Positions[i].X;
-                _matchesList[i].Team2.Flag.Top = _team2Positions[i].Y;
+                _matchesList[i].Team2.Flag.Location = _team2Positions[i];
 
-                _matchesList[i].DateLabel.Left = _labelPositions[i].X;
-                _matchesList[i].DateLabel.Top = _labelPositions[i].Y;
+                _matchesList[i].DateLabel.Location = _labelPositions[i];
+
+                _matchesList[i].score1.Location = _team1Positions[i];
+                _matchesList[i].score1.Left += _matchesList[i].Team1.Flag.Width + 5;
+
+
+                _matchesList[i].score2.Location = _team2Positions[i];
+                _matchesList[i].score2.Left -= 25;
+
+                ValidationButton.Location = _labelPositions[5];
+                ValidationButton.Top += 100;
+                ValidationButton.Left += 50;
+
             }
         }
 
