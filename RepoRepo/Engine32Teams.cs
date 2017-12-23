@@ -58,6 +58,16 @@ namespace RepoRepo
 
         }
 
+        public static void UpdateMatchResults(List<Match> matchesList)
+        {
+            Connector.UpdateMatchesInDataBase(matchesList);
+        }
+
+        public static void UpdateTeamsStats(List<BasicTeam> finalTeams)
+        {
+            Connector.UpdateTeamsStats(finalTeams);
+        }
+
         public static void ShowAndFixPosition()
         {
             foreach (var pot in PotsList)
@@ -316,8 +326,6 @@ namespace RepoRepo
             }
         }
 
-
-        
 
         
     }

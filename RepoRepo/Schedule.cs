@@ -7,7 +7,7 @@ namespace RepoRepo
 {
     public class Schedule
     {
-        private List<Match> _matchesList = new List<Match>(capacity:6);
+        private List<Match> _matchesList = new List<Match>(capacity: 6);
 
         private static List<Point> _team1Positions = new List<Point>(capacity: 6);
         private static List<Point> _team2Positions = new List<Point>(capacity: 6);
@@ -19,8 +19,58 @@ namespace RepoRepo
         private void ValidateClick(object sender, EventArgs e)
         {
             ValidationButton.Enabled = false;
+            List<BasicTeam> finalTeams = new List<BasicTeam>(capacity: 4);
+
             foreach (var match in _matchesList)
+            {
                 match.MakeFieldsReadOnly();
+                match.SetResultToTeam();
+            }
+
+            BasicTeam t1 = new BasicTeam(null, _matchesList[0].Team1.Name, _matchesList[0].Team1.Continent, null);
+            BasicTeam t2 = new BasicTeam(null, _matchesList[0].Team2.Name, _matchesList[0].Team2.Continent, null);
+            BasicTeam t3 = new BasicTeam(null, _matchesList[1].Team2.Name, _matchesList[1].Team2.Continent, null);
+            BasicTeam t4 = new BasicTeam(null, _matchesList[2].Team2.Name, _matchesList[2].Team2.Continent, null);
+
+            for (int i = 0; i < 3; i++)
+                CalculateTotalForTeam(t1, i, true);
+
+            CalculateTotalForTeam(t2, 0, false);
+            CalculateTotalForTeam(t2, 3, true);
+            CalculateTotalForTeam(t2, 4, true);
+
+            CalculateTotalForTeam(t3, 1, false);
+            CalculateTotalForTeam(t3, 3, false);
+            CalculateTotalForTeam(t3, 5, true);
+
+            CalculateTotalForTeam(t4, 2, false);
+            CalculateTotalForTeam(t4, 4, false);
+            CalculateTotalForTeam(t4, 5, false);
+
+            finalTeams.Add(t1); finalTeams.Add(t2);
+            finalTeams.Add(t3); finalTeams.Add(t4);
+
+            Engine32Teams.UpdateMatchResults(_matchesList);
+            
+            Engine32Teams.UpdateTeamsStats(finalTeams);
+        }
+
+        private void CalculateTotalForTeam(BasicTeam team, int pos, bool? isTeam1)
+        {
+            if (isTeam1 == true)
+            {
+                team.points += _matchesList[pos].Team1.points;
+                team.win += _matchesList[pos].Team1.win;
+                team.draw += _matchesList[pos].Team1.draw;
+                team.loss += _matchesList[pos].Team1.loss;
+            }
+            else if(isTeam1 == false)
+            {
+                team.points += _matchesList[pos].Team2.points;
+                team.win += _matchesList[pos].Team2.win;
+                team.draw += _matchesList[pos].Team2.draw;
+                team.loss += _matchesList[pos].Team2.loss;
+            }
         }
 
         public List<Match> GetMatches()

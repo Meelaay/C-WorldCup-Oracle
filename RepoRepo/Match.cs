@@ -17,12 +17,32 @@ namespace RepoRepo
         public TextBox score2 { get; }
 
 
-        
+
+        public void SetResultToTeam()
+        {
+            int score1Int = Convert.ToInt32(score1.Text);
+            int score2Int = Convert.ToInt32(score2.Text);
+
+            if (score1Int != score2Int)
+            {
+                if (score1Int > score2Int)
+                {
+                    Team1.points += 3; Team1.win++; Team2.loss++;
+                }
+                else
+                {
+                    Team2.points += 3; Team2.win++; Team1.loss++;
+                }
+            }
+            else
+            {
+                Team1.points++; Team1.draw++;
+                Team2.points++; Team2.draw++;
+            }
+        }
 
         public Match(BasicTeam team1, BasicTeam team2, DateTime matchDate)
         {
-
-
             Team1 = BasicTeam.DeepCopyTeam(team1);
             Team2 = BasicTeam.DeepCopyTeam(team2);
             score1 = new TextBox();
@@ -42,5 +62,8 @@ namespace RepoRepo
             score1.ReadOnly = true;
             score2.ReadOnly = true;
         }
+
+        
+
     }
 }

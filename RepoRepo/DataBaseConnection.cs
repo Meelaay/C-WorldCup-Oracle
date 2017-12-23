@@ -36,14 +36,62 @@ namespace RepoRepo
             _myConnection.ConnectionString = ConnectionString;
         }
 
+        public void UpdateTeamsStats(List<BasicTeam> teamsList)
+        {
+            foreach (var team in teamsList)
+            {
+                UpdateTeamStats(team);
+            }
+        }
+
+        private void UpdateTeamStats(BasicTeam team)
+        {
+            //if the app shows a bug or a delay -> reset the sequence to 0, transcate matches table, AND COMMIT
+            string query = string.Format("UPDATE team t SET t.points = {0}, t.win = {1}, t.draw = {2}, t.loss = {3} WHERE country = '{4}'",
+                    team.points,
+                    team.win,
+                    team.draw,
+                    team.loss,
+                    team.Name
+                );
+
+            _myConnection.Open();
+                OracleCommand cmd = new OracleCommand(query);
+                cmd.CommandType = CommandType.Text;
+                cmd.Connection = _myConnection;
+                int rowsAffected = cmd.ExecuteNonQuery();
+            _myConnection.Close();
+
+            if (rowsAffected != 1)
+                throw new Exception("DataBaseConnection::UpdateTeamStats() -> rowsAffected != 1");
+        }
+
+
+
         public void UpdateMatchesInDataBase(List<Match> matches)
         {
-            
+            foreach (var match in matches)
+                UpdateMatchInDataBase(match);   
         }
 
         private void UpdateMatchInDataBase(Match match)
         {
-            
+            string query = string.Format("UPDATE match m SET m.score1 = {0}, m.score2 = {1} WHERE DEREF(m.team1).country = '{2}' AND DEREF(m.team2).country = '{3}'",
+                    match.score1.Text,
+                    match.score2.Text,
+                    match.Team1.Name,
+                    match.Team2.Name
+                );
+
+            _myConnection.Open();
+                OracleCommand cmd = new OracleCommand(query);
+                cmd.CommandType = CommandType.Text;
+                cmd.Connection = _myConnection;
+                int rowsAffected = cmd.ExecuteNonQuery();
+            _myConnection.Close();
+
+            if (rowsAffected != 1)
+                throw new Exception("DataBaseConnection::UpdateMatchInDataBase() -> rowsAffected != 1");
         }
 
         public void AddScheduleToDataBase(List<Match> matchesList)
@@ -55,11 +103,12 @@ namespace RepoRepo
         public void AddMatchToDataBase(Match matchToAdd)
         {
             string query = string.Format(
-                    "INSERT INTO matches VALUES(matches_seq.nextval, '{0}', '{1}', 0, 0, TO_DATE('{2}/{3}/{4}','dd-mm-yyyy'))",
+                    "INSERT INTO match VALUES(t_match(match_seq.nextval, TO_DATE('{0}/{1}/{2}', 'dd-mm-yyyy'), 32, 0, 0, (SELECT REF(t) FROM team t WHERE t.country = '{3}'), (SELECT REF(t) FROM team t WHERE t.country = '{4}')))",
+                    matchToAdd.MatchDate.Day, matchToAdd.MatchDate.Month, matchToAdd.MatchDate.Year,
                     matchToAdd.Team1.Name,
-                    matchToAdd.Team2.Name, 
-                    matchToAdd.MatchDate.Day, matchToAdd.MatchDate.Month, matchToAdd.MatchDate.Year
+                    matchToAdd.Team2.Name 
                 );
+
             _myConnection.Open();
             OracleCommand cmd = new OracleCommand(query);
             cmd.CommandType = CommandType.Text;
@@ -71,11 +120,6 @@ namespace RepoRepo
                 throw new Exception("DataBaseConnection::AddMatchInDataBase() -> rowsAffected != 1");
         }
 
-        public void EstablishConnection()
-        {
-            var a = ExecuteQuery("select * from test");
-
-        }
 
         public static void UpdateGroupForEachTeamInDataBase(List<Group> groupsList)
         {
@@ -86,7 +130,7 @@ namespace RepoRepo
 
         public static void UpdateTeamInDataBase(Team newTeam)
         {
-            string query = string.Format("UPDATE teams SET groupT = '{0}' WHERE country = '{1}'",
+            string query = string.Format("UPDATE team SET groupT = '{0}' WHERE country = '{1}'",
                                           newTeam.Group, newTeam.Name);
             _myConnection.Open();
             OracleCommand cmd = new OracleCommand(query);
@@ -135,7 +179,7 @@ namespace RepoRepo
         {
             //todo not * fix IT ** you can change it here if it requirements chage in future
             var teamsListOfPot = new List<Team>();
-            string query = String.Format("SELECT country, pot, continent FROM teams t WHERE t.pot = '{0}' ", pot);//pot is 1-2-3-4 not a-b-c-d
+            string query = String.Format("SELECT country, pot, continent FROM team t WHERE t.pot = '{0}' ", pot);//pot is 1-2-3-4 not a-b-c-d
             DataTable dt = ExecuteQuery(query);
 
             int i = -1;

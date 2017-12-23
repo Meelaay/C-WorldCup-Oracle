@@ -13,6 +13,12 @@ namespace RepoRepo
         public string Continent { get; set; }
         public string Group { get; set; }
 
+        public int points = 0;
+        public int win = 0;
+        public int draw = 0;
+        public int loss = 0;
+
+
         public BasicTeam(PictureBox flag, string name, string continent, string group)
         {
             Flag      = flag;
