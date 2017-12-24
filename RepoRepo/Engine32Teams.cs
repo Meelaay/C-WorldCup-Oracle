@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
+using System.Text;
 using System.Windows.Forms;
 
 
@@ -62,11 +64,32 @@ namespace RepoRepo
         {
             List<List<string>> champions = Connector.ChampionsOfGroup(GroupsList);
 
+            StringBuilder championsBuilder = new StringBuilder();
 
 
+
+            foreach (var team in champions[0])
+                championsBuilder.Append(team + " ");
+
+            for (int i = 0; i < 8; i+=2)
+            {
+                int index = i;
+                int nextIndex = i+1;
+
+                championsBuilder.Append(champions[1][nextIndex] + " ");
+                championsBuilder.Append(champions[1][index] + " ");
+            }
+            foreach (var team in champions[1])
+                championsBuilder.Append(team + " ");
+
+            string cParamss = championsBuilder.ToString();
+            string cParams = String.Copy(cParamss);
+            string cPath = @".\arbre32.exe";
+
+            System.Diagnostics.Process.Start(cPath, cParams);
         }
 
-
+        
         public static void UpdateMatchResults(List<Match> matchesList)
         {
             Connector.UpdateMatchesInDataBase(matchesList);
