@@ -7,14 +7,14 @@ namespace RepoRepo
 {
     public class Schedule
     {
-        private List<Match> _matchesList = new List<Match>(capacity: 6);
+        private readonly List<Match> _matchesList = new List<Match>(capacity: 6);
 
-        private static List<Point> _team1Positions = new List<Point>(capacity: 6);
-        private static List<Point> _team2Positions = new List<Point>(capacity: 6);
+        private static readonly List<Point> _team1Positions = new List<Point>(capacity: 6);
+        private static readonly List<Point> _team2Positions = new List<Point>(capacity: 6);
 
-        private static List<Point> _labelPositions = new List<Point>(capacity: 6);//TODO fix this initialize it
+        private static readonly List<Point> _labelPositions = new List<Point>(capacity: 6);//TODO fix this initialize it
 
-        public Button ValidationButton = new Button();
+        public readonly Button ValidationButton = new Button();
 
         private void ValidateClick(object sender, EventArgs e)
         {
@@ -55,6 +55,7 @@ namespace RepoRepo
             Engine32Teams.UpdateTeamsStats(finalTeams);
         }
 
+        //pass null value to arg (bool? isTeam1) in case of a draw
         private void CalculateTotalForTeam(BasicTeam team, int pos, bool? isTeam1)
         {
             if (isTeam1 == true)

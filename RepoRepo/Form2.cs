@@ -36,5 +36,30 @@ namespace RepoRepo
         {
             GlobalEngine.engine32.ShowScheduleForGroup(Engine32Teams.CharToGroup('d'));
         }
+
+        private void groupEToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            GlobalEngine.engine32.ShowScheduleForGroup(Engine32Teams.CharToGroup('e'));
+        }
+
+        private void groupFToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            GlobalEngine.engine32.ShowScheduleForGroup(Engine32Teams.CharToGroup('f'));
+        }
+
+        private void groupGToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            GlobalEngine.engine32.ShowScheduleForGroup(Engine32Teams.CharToGroup('g'));
+        }
+
+        private void groupHToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            GlobalEngine.engine32.ShowScheduleForGroup(Engine32Teams.CharToGroup('h'));
+        }
+
+        private void passToTreeToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Engine32Teams.FinalizeEngineToTree();
+        }
     }
 }

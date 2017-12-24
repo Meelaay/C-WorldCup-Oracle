@@ -65,11 +65,6 @@ namespace RepoRepo
 
         }
 
-        private Point GetPosition(Control c)
-        {
-            return c.FindForm().PointToClient(c.Parent.PointToScreen(c.Location));
-        }
-
         private void pictureBox1_MouseUp(object sender, MouseEventArgs e)
         {
             

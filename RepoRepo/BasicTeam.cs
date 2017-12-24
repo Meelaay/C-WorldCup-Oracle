@@ -28,7 +28,7 @@ namespace RepoRepo
         }
         
 
-        public static PictureBox DeepCopy(PictureBox pb)
+        private static PictureBox DeepCopy(PictureBox pb)
         {
             return new PictureBox { Name = pb.Name, Image = pb.Image, Size = pb.Size, SizeMode = pb.SizeMode };
         }

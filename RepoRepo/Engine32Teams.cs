@@ -58,6 +58,15 @@ namespace RepoRepo
 
         }
 
+        public static void FinalizeEngineToTree()
+        {
+            List<List<string>> champions = Connector.ChampionsOfGroup(GroupsList);
+
+
+
+        }
+
+
         public static void UpdateMatchResults(List<Match> matchesList)
         {
             Connector.UpdateMatchesInDataBase(matchesList);
@@ -86,7 +95,7 @@ namespace RepoRepo
             MoveTeamToGroup(PotsList[0]._potTeams[2][0], 'a');
         }
 
-        public static void RandomizeTeamsOfContinentOnPot(ref int i, int potNumber, string continent)
+        private static void RandomizeTeamsOfContinentOnPot(ref int i, int potNumber, string continent)
         {
             while (PotsList[potNumber-1].ContainsContinent(continent))
             {

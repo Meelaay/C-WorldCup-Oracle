@@ -14,8 +14,8 @@ namespace RepoRepo
 {
     public class DataBaseConnection
     {
-        public string ConnectionString { get; }
-        public static OracleConnection _myConnection = new OracleConnection();
+        private string ConnectionString { get; }
+        private static OracleConnection _myConnection = new OracleConnection();
 
 
 
@@ -205,5 +205,47 @@ namespace RepoRepo
             return teamsListOfPot;
         }
 
+        public List<List<string>> ChampionsOfGroup(List<Group> groupsList)
+        {
+            List<List<string>> chamList = new List<List<string>>(capacity:2);
+            List<string> firstplace = new List<string>(capacity:8);
+            List<string> secondplace = new List<string>(capacity: 8);
+
+
+            foreach (var group in groupsList)
+            {
+                var a = FirstTwoTeams(group._groupChar);
+                firstplace.Add(a[0]);
+                secondplace.Add(a[1]);
+            }
+
+            chamList.Add(firstplace);
+            chamList.Add(secondplace);
+
+
+            //code to fill list from db
+
+            return chamList;
+        }
+
+        private List<string> FirstTwoTeams(char groupChar)
+        {
+            string query = string.Format(
+                "SELECT * FROM (SELECT * FROM team t WHERE t.groupT = '{0}' ORDER BY t.points DESC) WHERE ROWNUM <= 2",
+                groupChar.ToString()
+            );
+
+            List<string> firstAndSecond = new List<string>(capacity:2);
+
+            var dt = ExecuteQuery(query);
+
+            foreach (DataRow row in dt.Rows)
+            {
+                string name = row["COUNTRY"].ToString();
+                firstAndSecond.Add(name);
+            }
+
+            return firstAndSecond;
+        }
     }
 }
